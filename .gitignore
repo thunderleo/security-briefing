@@ -1,7 +1,6 @@
 # 运行时生成数据
 raw_data.json
 analysis.json
-index.html
 
 # Python
 __pycache__/
