@@ -19,7 +19,7 @@ SOURCE_ICONS = {
     "安全内参": "🇨🇳",
 }
 
-CATEGORY_ORDER = ["漏洞利用", "漏洞风险", "安全事件", "政策法规", "解读分析"]
+CATEGORY_ORDER = ["政策法规", "安全事件", "漏洞风险", "漏洞利用", "解读分析"]
 CATEGORY_CONFIG = {
     "漏洞利用": {"icon": "🎯", "color": "#dc2626"},
     "漏洞风险": {"icon": "⚠️", "color": "#ea580c"},
