@@ -89,17 +89,17 @@ body {
   <h1>🛡️ 每日网络安全简报</h1>
   <p class="subtitle">2026年05月30日 星期六 · AI 分析师精选</p>
   <div class="stats-bar">
-    <div class="stat"><div class="stat-value">44</div><div class="stat-label">情报条目</div></div>
-    <div class="stat"><div class="stat-value">6</div><div class="stat-label">数据来源</div></div>
+    <div class="stat"><div class="stat-value">64</div><div class="stat-label">情报条目</div></div>
+    <div class="stat"><div class="stat-value">7</div><div class="stat-label">数据来源</div></div>
     <div class="stat"><div class="stat-value">15</div><div class="stat-label">精选推荐</div></div>
   </div>
 </div>
 <div class="container">
-  <p class="last-update">🔄 更新于 2026-05-30 20:26:47</p>
+  <p class="last-update">🔄 更新于 2026-05-30 20:54:56</p>
 
   <section class="source-group curated-section">
   <h2 class="source-title">★ 今日精选情报 <span class="count">(15 条)</span></h2>
-  <p class="curated-desc">以下为 AI 分析师从 44 条原始情报中筛选的重要信息，附完整分析总结</p>
+  <p class="curated-desc">以下为 AI 分析师从 64 条原始情报中筛选的重要信息，附完整分析总结</p>
   <div class="items"><article class="intel-item curated">
   <div class="curated-top">
     <span class="curated-badge">★ 分析师精选</span>
@@ -108,10 +108,10 @@ body {
   </div>
   <h3><a href="https://thehackernews.com/2026/05/critical-gogs-rce-vulnerability-lets.html" target="_blank" rel="noopener">Gogs 自托管 Git 服务曝严重 RCE 漏洞（CVSS 9.4），已认证用户可远程执行任意代码</a></h3>
   <p class="original-title">原文: Critical Gogs RCE Vulnerability Lets Any Authenticated User Execute Arbitrary Code</p>
-  <div class="summary">Rapid7 披露了开源 Git 服务 Gogs 的一个严重远程代码执行漏洞（CVSS 9.4）。该漏洞允许任何已认证用户在特定条件下执行任意代码，目前尚未分配 CVE 编号。Gogs 广泛用于中小团队自建 Git 仓库，国内也有大量部署。建议所有使用 Gogs 的组织立即关注官方补丁发布情况，在修复前限制非必要用户的注册和登录权限，同时对 Git 仓库服务器实施网络分段和访问控制。</div>
+  <div class="summary">Rapid7 披露了开源 Git 服务 Gogs 的一个严重 RCE 漏洞（CVSS 9.4），允许任何已认证用户在特定条件下执行任意代码，目前尚未分配 CVE 编号。Gogs 广泛用于中小团队自建 Git 仓库，国内也有大量部署。建议立即关注官方补丁，在修复前限制非必要用户的注册和登录权限，同时实施 Git 仓库服务器的网络分段和访问控制。</div>
   <div class="meta">
     <span class="source-badge">📰 The Hacker News</span>
-    <span class="date">发布于 2026-05-28 17:24 UTC</span>
+    
     <a class="origin-link" href="https://thehackernews.com/2026/05/critical-gogs-rce-vulnerability-lets.html" target="_blank">查看原文 →</a>
   </div>
 </article>
@@ -123,10 +123,10 @@ body {
   </div>
   <h3><a href="https://thehackernews.com/2026/05/pan-os-globalprotect-authentication.html" target="_blank" rel="noopener">PAN-OS GlobalProtect 认证绕过漏洞（CVE-2026-0257）已遭在野利用</a></h3>
   <p class="original-title">原文: PAN-OS GlobalProtect Authentication Bypass (CVE-2026-0257) Under Active Exploitation</p>
-  <div class="summary">Palo Alto Networks 发出警告，一个中等严重程度的 PAN-OS 和 Prisma Access 认证绕过漏洞（CVE-2026-0257，CVSS 7.8）已遭在野利用。攻击者可利用该漏洞建立 VPN 连接，绕过身份验证。GlobalProtect 是企业远程接入的核心组件，国内大量使用 Palo Alto 防火墙的企业应优先排查受影响版本，立即安装安全更新，并审计 VPN 连接日志中存在异常的认证记录。</div>
+  <div class="summary">Palo Alto Networks 发出警告，PAN-OS 和 Prisma Access 的认证绕过漏洞（CVE-2026-0257，CVSS 7.8）已遭在野利用，攻击者可借此建立 VPN 连接绕过身份验证。GlobalProtect 是企业远程接入的核心组件，国内大量使用 Palo Alto 防火墙的企业应优先排查受影响版本，立即安装安全更新，并审计 VPN 连接日志中的异常认证记录。</div>
   <div class="meta">
     <span class="source-badge">📰 The Hacker News</span>
-    <span class="date">发布于 2026-05-30 06:41 UTC</span>
+    
     <a class="origin-link" href="https://thehackernews.com/2026/05/pan-os-globalprotect-authentication.html" target="_blank">查看原文 →</a>
   </div>
 </article>
@@ -136,28 +136,88 @@ body {
     <span class="cat-badge">新型攻击</span>
     <span class='importance'>★★★★★</span>
   </div>
-  <h3><a href="https://thehackernews.com/2026/05/chatgphish-vulnerability-turns-chatgpt.html" target="_blank" rel="noopener">ChatGPhish：利用 ChatGPT Markdown 渲染信任机制的新型钓鱼攻击面</a></h3>
-  <p class="original-title">原文: ChatGPhish Vulnerability Turns ChatGPT Web Summaries Into a Phishing Surface</p>
-  <div class="summary">Permiso Security 披露了一种名为 ChatGPhish 的新型攻击技术，利用 ChatGPT 对 Markdown 链接和图片的隐式信任机制，通过提示注入将恶意链接嵌入 AI 回复中，诱导用户点击钓鱼页面。这一攻击面暴露了 AI 聊天界面在渲染用户可控内容时的安全短板。建议企业在使用 AI 助手时，对 AI 生成内容中的链接实施额外审查，并考虑在浏览器层面对 AI 平台实施内容安全策略。</div>
+  <h3><a href="https://www.bleepingcomputer.com/news/security/chatgpt-share-links-abused-to-host-fake-outage-pages-to-deliver-malware/" target="_blank" rel="noopener">ChatGPT 分享链接被滥用于托管虚假故障页面分发恶意软件</a></h3>
+  <p class="original-title">原文: ChatGPT share links abused to host fake outage pages to deliver malware</p>
+  <div class="summary">威胁行为者正在滥用 ChatGPT 的分享链接功能，托管虚假的 OpenAI 故障页面，诱导用户下载伪装成 ChatGPT 桌面版应用的恶意软件。攻击者利用 chatgpt.com 的可信域名来绕过传统 URL 检测机制。这是继 ChatGPhish 之后又一起针对 ChatGPT 平台的滥用事件，建议企业安全团队将 AI 平台域名纳入 Web 过滤监控白名单，同时对员工进行 AI 平台钓鱼攻击的安全意识培训。</div>
   <div class="meta">
-    <span class="source-badge">📰 The Hacker News</span>
-    <span class="date">发布于 2026-05-29 18:07 UTC</span>
-    <a class="origin-link" href="https://thehackernews.com/2026/05/chatgphish-vulnerability-turns-chatgpt.html" target="_blank">查看原文 →</a>
+    <span class="source-badge">💻 BleepingComputer</span>
+    
+    <a class="origin-link" href="https://www.bleepingcomputer.com/news/security/chatgpt-share-links-abused-to-host-fake-outage-pages-to-deliver-malware/" target="_blank">查看原文 →</a>
   </div>
 </article>
 <article class="intel-item curated">
   <div class="curated-top">
     <span class="curated-badge">★ 分析师精选</span>
-    <span class="cat-badge">新型攻击</span>
+    <span class="cat-badge">执法行动</span>
     <span class='importance'>★★★★★</span>
   </div>
-  <h3><a href="https://thehackernews.com/2026/05/attackers-use-llm-agent-for-post.html" target="_blank" rel="noopener">攻击者利用 LLM Agent 实施后渗透操作，AI 武器化进入新阶段</a></h3>
-  <p class="original-title">原文: Attackers Use LLM Agent for Post-Exploitation After Marimo CVE-2026-39987 Exploit</p>
-  <div class="summary">安全研究人员发现一个未知威胁组织在成功利用 Marimo CVE-2026-39987 漏洞获得初始访问后，使用大语言模型（LLM）Agent 执行后渗透操作，包括提取云凭证和横向移动。这是首个有记录的 LLM Agent 直接用于攻击链后渗透阶段的案例，标志着 AI 武器化进入新阶段。LLM Agent 能自动理解环境并执行复杂攻击步骤，大幅降低攻击门槛。防守方应加速部署 AI 驱动的检测和响应能力。</div>
+  <h3><a href="https://www.bleepingcomputer.com/news/security/dutch-govt-disrupts-malware-botnet-with-17-million-infected-devices/" target="_blank" rel="noopener">荷兰当局摧毁 1700 万设备规模的恶意僵尸网络</a></h3>
+  <p class="original-title">原文: Dutch govt disrupts malware botnet with 17 million infected devices</p>
+  <div class="summary">荷兰执法部门成功摧毁了一个感染规模达 1700 万设备的恶意僵尸网络，在当地托管商处查封了 200 多台服务器。这是近年来规模最大的僵尸网络打击行动之一，涉及设备数量超过此前知名的 Emotet 和 TrickBot 僵尸网络。此次行动凸显了跨国执法协作在大规模 botnet 取缔中的关键作用，也提醒防守方需要重视 IoT 设备的安全基线管理。</div>
   <div class="meta">
-    <span class="source-badge">📰 The Hacker News</span>
-    <span class="date">发布于 2026-05-29 14:39 UTC</span>
-    <a class="origin-link" href="https://thehackernews.com/2026/05/attackers-use-llm-agent-for-post.html" target="_blank">查看原文 →</a>
+    <span class="source-badge">💻 BleepingComputer</span>
+    
+    <a class="origin-link" href="https://www.bleepingcomputer.com/news/security/dutch-govt-disrupts-malware-botnet-with-17-million-infected-devices/" target="_blank">查看原文 →</a>
+  </div>
+</article>
+<article class="intel-item curated">
+  <div class="curated-top">
+    <span class="curated-badge">★ 分析师精选</span>
+    <span class="cat-badge">数据泄露</span>
+    <span class='importance'>★★★★★</span>
+  </div>
+  <h3><a href="https://www.bleepingcomputer.com/news/security/charter-communications-data-breach-affects-49-million-accounts/" target="_blank" rel="noopener">Charter Communications 数据泄露影响 490 万账户，ShinyHunters 团伙认领</a></h3>
+  <p class="original-title">原文: Charter Communications data breach affects 4.9 million accounts</p>
+  <div class="summary">ShinyHunters 勒索团伙通过入侵美国电信巨头 Charter Communications 窃取了 490 万账户的个人信息，数据包含姓名、联系方式、账户详情等敏感字段。Charter 是美国第二大有线电视运营商，此次泄露影响范围广泛。值得注意的是，ShinyHunters 近日还声称攻击了邮轮巨头嘉年华集团，显示该团伙正处于活跃期。建议使用 Charter 服务的用户立即更改密码并启用多因素认证。</div>
+  <div class="meta">
+    <span class="source-badge">💻 BleepingComputer</span>
+    
+    <a class="origin-link" href="https://www.bleepingcomputer.com/news/security/charter-communications-data-breach-affects-49-million-accounts/" target="_blank">查看原文 →</a>
+  </div>
+</article>
+<article class="intel-item curated">
+  <div class="curated-top">
+    <span class="curated-badge">★ 分析师精选</span>
+    <span class="cat-badge">安全趋势</span>
+    <span class='importance'>★★★★★</span>
+  </div>
+  <h3><a href="https://www.bleepingcomputer.com/news/security/us-charges-google-security-engineer-with-polymarket-insider-trading/" target="_blank" rel="noopener">谷歌安全工程师因 Polymarket 内幕交易被起诉</a></h3>
+  <p class="original-title">原文: US charges Google security engineer with Polymarket insider trading</p>
+  <div class="summary">美国司法部指控一名谷歌安全工程师利用公司机密数据在去中心化预测市场 Polymarket 上下注，获利 120 万美元。这是首起涉及安全人员利用内部信息在加密货币预测市场交易的内幕交易案，预示监管机构开始将传统证券法的内幕交易框架延伸到 Web3 预测市场。企业应加强对员工访问内部数据的审计，尤其是安全团队——他们通常拥有最高级别的系统访问权限。</div>
+  <div class="meta">
+    <span class="source-badge">💻 BleepingComputer</span>
+    
+    <a class="origin-link" href="https://www.bleepingcomputer.com/news/security/us-charges-google-security-engineer-with-polymarket-insider-trading/" target="_blank">查看原文 →</a>
+  </div>
+</article>
+<article class="intel-item curated">
+  <div class="curated-top">
+    <span class="curated-badge">★ 分析师精选</span>
+    <span class="cat-badge">数据泄露</span>
+    <span class='importance'>★★★★☆</span>
+  </div>
+  <h3><a href="https://www.bleepingcomputer.com/news/security/california-ag-sues-23andme-over-2023-breach-exposing-health-data/" target="_blank" rel="noopener">加州总检察长起诉 23andMe 2023 年数据泄露案</a></h3>
+  <p class="original-title">原文: California AG sues 23andMe over 2023 breach exposing health data</p>
+  <div class="summary">加州总检察长 Rob Bonta 对基因检测公司 23andMe（现 Chrome Holding Co.）提起诉讼，指控其未能保护敏感客户基因和个人信息。2023 年的大规模泄露暴露了数百万用户的遗传数据和家族关系信息。基因数据的敏感性远超普通身份信息——泄露的后果不可逆转（无法更改 DNA）。此案将可能确立基因数据保护的法律先例，生物识别信息领域的从业者应密切关注诉讼进展。</div>
+  <div class="meta">
+    <span class="source-badge">💻 BleepingComputer</span>
+    
+    <a class="origin-link" href="https://www.bleepingcomputer.com/news/security/california-ag-sues-23andme-over-2023-breach-exposing-health-data/" target="_blank">查看原文 →</a>
+  </div>
+</article>
+<article class="intel-item curated">
+  <div class="curated-top">
+    <span class="curated-badge">★ 分析师精选</span>
+    <span class="cat-badge">安全技术</span>
+    <span class='importance'>★★★★★</span>
+  </div>
+  <h3><a href="https://www.bleepingcomputer.com/news/security/google-chrome-adds-session-cookie-theft-protection-for-all-users/" target="_blank" rel="noopener">Google Chrome 向所有用户推出 Device Bound Session Credentials 防会话 Cookie 窃取</a></h3>
+  <p class="original-title">原文: Google Chrome adds session cookie theft protection for all users</p>
+  <div class="summary">Google 宣布 Chrome 的 Device Bound Session Credentials（DBSC）功能现已正式向所有用户推出，用于防御会话 Cookie 窃取攻击。DBSC 将登录凭证绑定到特定设备，即使攻击者通过恶意软件窃取了 Cookie，也无法在其他设备上重用。这一机制能有效防御近年来日益猖獗的信息窃取恶意软件（如 RedLine、Raccoon Stealer 等）发起的会话劫持攻击，建议企业确保用户 Chrome 浏览器更新至最新版本以启用此功能。</div>
+  <div class="meta">
+    <span class="source-badge">💻 BleepingComputer</span>
+    
+    <a class="origin-link" href="https://www.bleepingcomputer.com/news/security/google-chrome-adds-session-cookie-theft-protection-for-all-users/" target="_blank">查看原文 →</a>
   </div>
 </article>
 <article class="intel-item curated">
@@ -168,26 +228,11 @@ body {
   </div>
   <h3><a href="https://xz.aliyun.com/news/92188" target="_blank" rel="noopener">亿赛通 CDG 文件服务器任意文件上传漏洞，国内大量政企受影响</a></h3>
   <p class="original-title">原文: 亿赛通CDG文件服务器任意文件上传漏洞分析</p>
-  <div class="summary">阿里云先知社区披露了亿赛通 CDG 文件服务器 uploadSoftWareFile 接口的严重漏洞，攻击者可利用路径遍历和目录控制绕过，将恶意文件写入服务器任意可写目录并实现远程代码执行。亿赛通 CDG 是国内文档安全管理的头部产品，大量政府、军工、金融企业部署。建议相关单位立即排查版本，临时禁用上传接口或实施严格的 Web 应用防火墙规则。</div>
+  <div class="summary">亿赛通 CDG 文件服务器的 uploadSoftWareFile 接口存在路径遍历和目录控制绕过漏洞，攻击者可绕过目录限制写入任意可写目录实现 RCE。亿赛通 CDG 是国产文档安全管理头部产品，在政府、军工、金融企业广泛部署。建议相关单位立即排查版本，临时启用 Web 应用防火墙规则阻断对该接口的 POST 请求。</div>
   <div class="meta">
     <span class="source-badge">🇨🇳 先知社区</span>
-    <span class="date">发布于 2026-05-30 12:00 UTC</span>
+    
     <a class="origin-link" href="https://xz.aliyun.com/news/92188" target="_blank">查看原文 →</a>
-  </div>
-</article>
-<article class="intel-item curated">
-  <div class="curated-top">
-    <span class="curated-badge">★ 分析师精选</span>
-    <span class="cat-badge">威胁情报</span>
-    <span class='importance'>★★★★★</span>
-  </div>
-  <h3><a href="https://xz.aliyun.com/news/92184" target="_blank" rel="noopener">Coze 空间被用于 C2 流量转发，AI 应用平台面临 abuse 风险</a></h3>
-  <p class="original-title">原文: Coze空间cs流量转发</p>
-  <div class="summary">先知社区公开了一种利用 Coze 空间（字节跳动旗下 AI Bot 开发平台）进行 Cobalt Strike 流量转发的方法。攻击者将 Coze 空间的合法域名作为 C2 流量的中转站，利用白名单域名的信任特性绕过传统网络检测。这种新型 C2 通信手法利用了公众对 AI 平台的信任，且 Coze 等低代码平台难以对用户部署的应用内容进行深度安全审查。防守方需加强对 AI 平台域名的流量监控。</div>
-  <div class="meta">
-    <span class="source-badge">🇨🇳 先知社区</span>
-    <span class="date">发布于 2026-05-30 12:21 UTC</span>
-    <a class="origin-link" href="https://xz.aliyun.com/news/92184" target="_blank">查看原文 →</a>
   </div>
 </article>
 <article class="intel-item curated">
@@ -196,28 +241,43 @@ body {
     <span class="cat-badge">漏洞预警</span>
     <span class='importance'>★★★★★</span>
   </div>
-  <h3><a href="https://www.4hou.com/posts/MXOm" target="_blank" rel="noopener">Progress ShareFile 曝认证绕过 + RCE 漏洞组合，文件传输平台再成焦点</a></h3>
-  <p class="original-title">原文: Progress ShareFile曝新漏洞 可组合实现未认证远程代码执行</p>
-  <div class="summary">watchTowr 研究人员发现 Progress ShareFile 5.x 的 Storage Zones Controller 组件存在两处漏洞——认证绕过（CVE-2026-2699）和远程代码执行（CVE-2026-2701），组合利用可在无需认证的情况下实现 RCE。文件传输平台历来是勒索软件的重点攻击目标，此前 Clop 勒索组织曾利用 MOVEit、GoAnywhere 等同类产品漏洞实施大规模数据窃取。使用 ShareFile 的企业应立即更新。</div>
+  <h3><a href="https://www.secrss.com/articles/90796" target="_blank" rel="noopener">Linux Kernel CIFSwitch 本地权限提升漏洞（QVD-2026-29453，CVSS 7.8）PoC 已公开</a></h3>
+  <p class="original-title">原文: Linux Kernel CIFSwitch本地权限提升漏洞安全风险通告</p>
+  <div class="summary">奇安信 CERT 监测到 Linux 内核 CIFSwitch 组件存在本地权限提升漏洞（QVD-2026-29453，CVSS 7.8），PoC 和 EXP 均已公开。本地低权限用户可构造伪造的 cifs.spnego 密钥描述，触发 root 权限的 cifs.upcall 实现提权。该漏洞影响范围广泛（百万级），使用 SMB/CIFS 文件共享的企业 Linux 服务器风险最高。建议管理员优先为关键服务器安装内核安全更新。</div>
   <div class="meta">
-    <span class="source-badge">🇨🇳 嘶吼 RoarTalk</span>
-    <span class="date">发布于 2026-04-10 04:00 UTC</span>
-    <a class="origin-link" href="https://www.4hou.com/posts/MXOm" target="_blank">查看原文 →</a>
+    <span class="source-badge">🇨🇳 安全内参</span>
+    
+    <a class="origin-link" href="https://www.secrss.com/articles/90796" target="_blank">查看原文 →</a>
   </div>
 </article>
 <article class="intel-item curated">
   <div class="curated-top">
     <span class="curated-badge">★ 分析师精选</span>
-    <span class="cat-badge">新型攻击</span>
+    <span class="cat-badge">安全技术</span>
     <span class='importance'>★★★★★</span>
   </div>
-  <h3><a href="https://www.4hou.com/posts/8gPj" target="_blank" rel="noopener">NoVoice 底层木马感染全球 230 万设备，格式化也无法清除</a></h3>
-  <p class="original-title">原文: 嘶吼安全动态：新型底层木马NoVoice爆发，全球230万设备中招</p>
-  <div class="summary">一款名为 NoVoice 的 Rootkit 级恶意程序正在全球大规模蔓延，已感染约 230 万移动设备（其中国内约 90 万台）。该木马深度感染 Android 和 iOS 系统底层，即使恢复出厂设置也无法清除，具备窃取隐私、远程控制等能力。NoVoice 的传播渠道主要来自第三方应用商店和恶意广告。建议用户仅从官方应用商店下载应用，企业移动设备管理（MDM）策略需加强对 sideload 安装的限制。</div>
+  <h3><a href="https://www.secrss.com/articles/90799" target="_blank" rel="noopener">Anthropic 发布 AI Agent 零信任安全框架，五类风险三层架构应对 Agent 安全挑战</a></h3>
+  <p class="original-title">原文: AI Agent零信任框架：五大风险、三层架构与八阶段实施流程</p>
+  <div class="summary">Anthropic 发布《Zero Trust for AI Agents》白皮书，系统性地提出了面向 AI Agent 部署的安全架构。核心判断是：Agent 不同于聊天机器人——它能调用工具、访问数据、自主执行，传统访问控制无法阻止 Agent 滥用合法权限。框架覆盖 Agent 特有的五大风险（提示注入、权限扩散、记忆投毒等），提出三层零信任架构和八阶段实施流程。所有引入 AI Agent 的企业安全团队都应阅读此白皮书。</div>
   <div class="meta">
-    <span class="source-badge">🇨🇳 嘶吼 RoarTalk</span>
-    <span class="date">发布于 2026-04-10 03:59 UTC</span>
-    <a class="origin-link" href="https://www.4hou.com/posts/8gPj" target="_blank">查看原文 →</a>
+    <span class="source-badge">🇨🇳 安全内参</span>
+    
+    <a class="origin-link" href="https://www.secrss.com/articles/90799" target="_blank">查看原文 →</a>
+  </div>
+</article>
+<article class="intel-item curated">
+  <div class="curated-top">
+    <span class="curated-badge">★ 分析师精选</span>
+    <span class="cat-badge">数据泄露</span>
+    <span class='importance'>★★★★★</span>
+  </div>
+  <h3><a href="https://www.secrss.com/articles/90818" target="_blank" rel="noopener">邮轮巨头嘉年华集团 600 万客户数据泄露，中国用户需警惕跨境钓鱼</a></h3>
+  <p class="original-title">原文: 邮轮巨头发生重大数据泄露，中国用户需警惕跨境钓鱼诈骗</p>
+  <div class="summary">全球最大邮轮运营商嘉年华集团确认近 600 万客户数据泄露，ShinyHunters 团伙声称负责并窃取了 870 万条 PII 记录及数 TB 企业数据。攻击通过社会工程学手段获取员工账号进入 IT 系统。嘉年华旗下拥有嘉年华邮轮、公主邮轮、歌诗达邮轮等 9 大品牌，在全球拥有大量中国客户。建议近期有邮轮出行计划的用户警惕针对性的跨境钓鱼攻击。</div>
+  <div class="meta">
+    <span class="source-badge">🇨🇳 安全内参</span>
+    
+    <a class="origin-link" href="https://www.secrss.com/articles/90818" target="_blank">查看原文 →</a>
   </div>
 </article>
 <article class="intel-item curated">
@@ -226,58 +286,13 @@ body {
     <span class="cat-badge">新型攻击</span>
     <span class='importance'>★★★★☆</span>
   </div>
-  <h3><a href="https://www.4hou.com/posts/LGMD" target="_blank" rel="noopener">CrystalRAT 新型远控木马以 MaaS 模式在 Telegram 上推广</a></h3>
+  <h3><a href="https://www.4hou.com/posts/LGMD" target="_blank" rel="noopener">新型 CrystalRAT 远控木马以 MaaS 模式在 Telegram 推广，新增反分析能力</a></h3>
   <p class="original-title">原文: 新型CrystalRAT恶意软件新增远程控制、数据窃取等功能</p>
-  <div class="summary">卡巴斯基发现一款名为 CrystalRAT 的新型远程控制木马正在 Telegram 上以恶意软件即服务（MaaS）模式运营，提供远程控制、键盘记录、剪贴板劫持和数据窃取功能。该木马与 WebRAT 高度同源，使用 Go 语言编写，具备反调试、虚拟机检测和代理检测等反分析能力，载荷经 zlib 压缩和 ChaCha20 加密。MaaS 模式降低了攻击门槛，预计会有更多中小型攻击者使用。</div>
+  <div class="summary">卡巴斯基发现 CrystalRAT 新型远控木马在 Telegram 上以 MaaS 模式运营，提供远程控制、键盘记录、剪贴板劫持和数据窃取功能。该木马使用 Go 语言编写，与 WebRAT（Salat）高度同源，具备反调试、虚拟机检测、代理检测等反分析能力，载荷经 zlib 压缩和 ChaCha20 加密。MaaS 订阅模式降低了攻击门槛，预计将吸引更多中小型攻击者。</div>
   <div class="meta">
     <span class="source-badge">🇨🇳 嘶吼 RoarTalk</span>
-    <span class="date">发布于 2026-04-09 04:00 UTC</span>
+    
     <a class="origin-link" href="https://www.4hou.com/posts/LGMD" target="_blank">查看原文 →</a>
-  </div>
-</article>
-<article class="intel-item curated">
-  <div class="curated-top">
-    <span class="curated-badge">★ 分析师精选</span>
-    <span class="cat-badge">APT 分析</span>
-    <span class='importance'>★★★★☆</span>
-  </div>
-  <h3><a href="https://thehackernews.com/2026/05/kimsuky-deploys-httpspy-expands-arsenal.html" target="_blank" rel="noopener">Kimsuky 组织引入 HTTPSpy、HelloDoor 和 VS Code Tunnels 新型攻击工具</a></h3>
-  <p class="original-title">原文: Kimsuky Deploys HTTPSpy, Expands Arsenal with HelloDoor and VS Code Tunnels</p>
-  <div class="summary">朝鲜 APT 组织 Kimsuky（Velvet Chollima）在 2026 年 3-4 月期间针对韩国军事和企业实体发动了新一轮攻击，使用了 HTTPSpy 信息窃取器、HelloDoor 后门，并创新性地利用 VS Code Tunnels 进行 C2 通信。VS Code Tunnels 作为合法开发工具的流量通常不会被安全设备阻断，这一手法与之前发现的 npm 和 GitHub 滥用趋势一致，反映了 APT 组织逐步转向合法服务的趋势。</div>
-  <div class="meta">
-    <span class="source-badge">📰 The Hacker News</span>
-    <span class="date">发布于 2026-05-29 05:57 UTC</span>
-    <a class="origin-link" href="https://thehackernews.com/2026/05/kimsuky-deploys-httpspy-expands-arsenal.html" target="_blank">查看原文 →</a>
-  </div>
-</article>
-<article class="intel-item curated">
-  <div class="curated-top">
-    <span class="curated-badge">★ 分析师精选</span>
-    <span class="cat-badge">APT 分析</span>
-    <span class='importance'>★★★★☆</span>
-  </div>
-  <h3><a href="https://thehackernews.com/2026/05/new-russian-linked-greyvibe-targets.html" target="_blank" rel="noopener">俄罗斯关联组织 GREYVIBE 以 AI 增强攻击手段持续打击乌克兰</a></h3>
-  <p class="original-title">原文: New Russia-Linked GREYVIBE Targets Ukraine with AI-Powered Cyberattacks</p>
-  <div class="summary">WithSecure 发布了关于 GREYVIBE 的详细报告，该俄罗斯语系威胁组织自 2025 年 8 月以来持续攻击乌克兰及相关实体。GREYVIBE 的特点是将 AI 技术深度融入攻击流程，包括使用 AI 生成钓鱼邮件、自动化信息提取和目标识别。其活动时间与克里姆林宫的地缘政治利益高度一致。AI 赋能的 APT 攻击正在从概念验证走向常态化，防守方需更新威胁模型以纳入 AI 增强攻击的场景。</div>
-  <div class="meta">
-    <span class="source-badge">📰 The Hacker News</span>
-    <span class="date">发布于 2026-05-29 11:31 UTC</span>
-    <a class="origin-link" href="https://thehackernews.com/2026/05/new-russian-linked-greyvibe-targets.html" target="_blank">查看原文 →</a>
-  </div>
-</article>
-<article class="intel-item curated">
-  <div class="curated-top">
-    <span class="curated-badge">★ 分析师精选</span>
-    <span class="cat-badge">安全趋势</span>
-    <span class='importance'>★★★★☆</span>
-  </div>
-  <h3><a href="https://thehackernews.com/2026/05/what-2000-exposed-vibe-coded-apps.html" target="_blank" rel="noopener">Shadow AI 新形态：2000 个暴露的 Vibe-Coded 应用揭示安全堆栈的盲区</a></h3>
-  <p class="original-title">原文: What 2,000 Exposed Vibe-Coded Apps Reveal About the Limits of Most Security Stacks</p>
-  <div class="summary">Shadow AI 的含义已从「员工往 ChatGPT 粘贴敏感数据」演变为更严峻的问题——员工用 AI 构建完整应用并直接发布到公网，绕过安全团队和 IT 部门。报告发现超过 2000 个 AI 辅助生成的暴露应用，涵盖生产系统集成、数据处理等场景。这些应用缺乏基本的安全审查，成为攻击者容易发现的目标。企业亟需建立 AI 开发治理框架，在赋能创新的同时防止影子 IT 失控。</div>
-  <div class="meta">
-    <span class="source-badge">📰 The Hacker News</span>
-    <span class="date">发布于 2026-05-29 10:30 UTC</span>
-    <a class="origin-link" href="https://thehackernews.com/2026/05/what-2000-exposed-vibe-coded-apps.html" target="_blank">查看原文 →</a>
   </div>
 </article>
 <article class="intel-item curated">
@@ -286,50 +301,35 @@ body {
     <span class="cat-badge">执法行动</span>
     <span class='importance'>★★★★☆</span>
   </div>
-  <h3><a href="https://www.darkreading.com/cyber-risk/dutch-raid-russian-bulletproof-host" target="_blank" rel="noopener">荷兰警方查封俄罗斯 bulletproof 托管商 THE.Hosting 800 台服务器</a></h3>
-  <p class="original-title">原文: Dutch Raid Fails to Dent Russian Bulletproof Host</p>
-  <div class="summary">荷兰执法部门近日对俄罗斯 bulletproof 托管商 THE.Hosting 采取了行动，查封了 800 台服务器并逮捕了两名运营人员。然而，THE.Hosting 的核心 IP 地址空间并未受到影响，该托管商的业务很可能在短时间内恢复。这一事件凸显了打击 bulletproof 托管服务的困难——即使有跨国执法合作，物理查封也难以彻底摧毁分布式的灰色基础设施。安全团队应持续监控与该托管商相关的恶意 IP 和域名。</div>
+  <h3><a href="https://www.4hou.com/posts/PGXA" target="_blank" rel="noopener">公安机关通报 37 款违规收集个人信息应用，小程序成重灾区</a></h3>
+  <p class="original-title">原文: 公安部通报37款违规应用，电商类占比超七成，小程序不再是法外之地</p>
+  <div class="summary">公安部通报 37 款移动应用存在违法违规收集使用个人信息行为，其中电商类占比超七成，且绝大多数为支付宝和微信小程序。常见违规包括未公开收集使用规则（21款）、超范围收集个人信息等。监管正将小程序纳入与原生 App 同等级别的个人信息保护监管框架，相关企业应立即开展小程序合规自查，避免因违规应用被通报或下架。</div>
   <div class="meta">
-    <span class="source-badge">📡 Dark Reading</span>
+    <span class="source-badge">🇨🇳 嘶吼 RoarTalk</span>
     
-    <a class="origin-link" href="https://www.darkreading.com/cyber-risk/dutch-raid-russian-bulletproof-host" target="_blank">查看原文 →</a>
+    <a class="origin-link" href="https://www.4hou.com/posts/PGXA" target="_blank">查看原文 →</a>
   </div>
 </article>
 <article class="intel-item curated">
   <div class="curated-top">
     <span class="curated-badge">★ 分析师精选</span>
-    <span class="cat-badge">漏洞预警</span>
-    <span class='importance'>★★★★☆</span>
+    <span class="cat-badge">新型攻击</span>
+    <span class='importance'>★★★★★</span>
   </div>
-  <h3><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-5065" target="_blank" rel="noopener">IBM Controller 硬编码凭证漏洞（CVSS 8.8），攻击者可提权至 root</a></h3>
-  <p class="original-title">原文: CVE-2026-5065</p>
-  <div class="summary">IBM Controller 11.0.1–11.1.2 版本被发现存在硬编码凭证漏洞（CVE-2026-5065，CVSS 8.8），攻击者可利用出厂默认密码绕过身份验证，获得 root 级别系统访问权限，安装持久化后门并窃取敏感数据。IBM 产品在企业级市场渗透率极高，使用相关产品的组织应立即检查版本并部署补丁。硬编码凭证类漏洞连续多年出现在 CWE Top 25 中，开发团队应在 CI/CD 流水线中加入凭据扫描。</div>
+  <h3><a href="https://www.4hou.com/posts/8gPj" target="_blank" rel="noopener">NoVoice 底层木马感染全球 230 万设备，重置也无法清除</a></h3>
+  <p class="original-title">原文: 嘶吼安全动态：新型底层木马NoVoice爆发，全球230万设备中招</p>
+  <div class="summary">Rootkit 级恶意程序 NoVoice 在全球大规模蔓延，感染约 230 万移动设备（国内约 90 万台），深度感染系统底层，恢复出厂设置也无法清除。具备窃取隐私和远程控制能力的 NoVoice 主要通过第三方应用商店和恶意广告传播。建议用户仅从官方应用商店下载应用，企业 MDM 策略需加强对 sideload 安装的限制。国内用户尤需警惕。</div>
   <div class="meta">
-    <span class="source-badge">🔴 NVD 漏洞库</span>
-    <span class="date">发布于 2026-05-27</span>
-    <a class="origin-link" href="https://nvd.nist.gov/vuln/detail/CVE-2026-5065" target="_blank">查看原文 →</a>
-  </div>
-</article>
-<article class="intel-item curated">
-  <div class="curated-top">
-    <span class="curated-badge">★ 分析师精选</span>
-    <span class="cat-badge">供应链安全</span>
-    <span class='importance'>★★★★☆</span>
-  </div>
-  <h3><a href="https://thehackernews.com/2026/05/malicious-sicoob-nuget-steals-banking.html" target="_blank" rel="noopener">恶意 NuGet 包窃取巴西银行凭证，npm 生态同样遭投毒</a></h3>
-  <p class="original-title">原文: Malicious Sicoob NuGet Steals Banking Credentials as npm Packages Target Cloud Secrets</p>
-  <div class="summary">Socket 研究团队发现了一个伪装成 Sicoob（巴西最大合作金融系统之一）C# SDK 的恶意 NuGet 包「Sicoob.Sdk」，版本 2.0.0–2.0.4 包含窃取客户端 ID 和 PFX 证书的恶意代码。与此同时，npm 生态也发现了针对云凭证的投毒攻击。软件供应链攻击持续升级，攻击者不再仅针对热门项目，而是精准仿冒特定行业 SDK。企业应建立依赖包镜像源白名单机制，并对外部依赖实施自动安全扫描。</div>
-  <div class="meta">
-    <span class="source-badge">📰 The Hacker News</span>
-    <span class="date">发布于 2026-05-29 09:11 UTC</span>
-    <a class="origin-link" href="https://thehackernews.com/2026/05/malicious-sicoob-nuget-steals-banking.html" target="_blank">查看原文 →</a>
+    <span class="source-badge">🇨🇳 嘶吼 RoarTalk</span>
+    
+    <a class="origin-link" href="https://www.4hou.com/posts/8gPj" target="_blank">查看原文 →</a>
   </div>
 </article></div>
 </section>
 </div>
 <div class="footer">
   <p>每日网络安全简报 | 精选内容由 AI 分析师从 RSS Feed 原始数据中筛选撰写</p>
-  <p style="margin-top:4px;">数据源: BleepingComputer · NVD 漏洞库 · The Hacker News · Unit 42 · 先知社区 · 嘶吼 RoarTalk</p>
+  <p style="margin-top:4px;">数据源: BleepingComputer · NVD 漏洞库 · The Hacker News · Unit 42 · 先知社区 · 嘶吼 RoarTalk · 安全内参</p>
 </div>
 </body>
 </html>
