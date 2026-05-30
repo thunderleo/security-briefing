@@ -77,9 +77,13 @@ def build_html():
         if is_curated:
             imp = it.get("importance", "")
             orig = it.get("original_title", "")
+            cat = it.get("category", "")
+            cat_cfg = CATEGORY_CONFIG.get(cat, {"color": "#666"})
+            cat_badge = f'<span class="cat-badge" style="background:{cat_cfg["color"]}18;color:{cat_cfg["color"]}">{cat}</span>'
             return f'''<article class="intel-item curated">
   <div class="curated-top">
     <span class="curated-badge">★ 分析师精选</span>
+    {cat_badge}
     {"<span class='importance'>" + imp + "</span>" if imp else ""}
   </div>
   <h3><a href="{it["url"]}" target="_blank" rel="noopener">{title}</a>{score_badge}</h3>
@@ -179,13 +183,14 @@ body {{
 .original-title {{ font-size:0.78em; color:#999; margin-bottom:6px; }}
 .curated-top {{ display:flex; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap; }}
 .importance {{ font-size:0.8em; color:#f59e0b; letter-spacing:1px; }}
+.cat-badge {{ display:inline-block; font-size:0.72em; font-weight:600; padding:2px 10px; border-radius:4px; margin-bottom:6px; }}
 .intel-item {{
 .intel-item:hover {{ box-shadow:0 4px 12px rgba(0,0,0,0.1); transform:translateY(-1px); }}
 .intel-item h3 {{
   font-size:1em; font-weight:600; margin-bottom:6px;
   display:flex; align-items:flex-start; gap:8px;
 }}
-.intel-item h3 a {{ color:#1a1a2e; text-decoration:none; flex:1; }}
+.intel-item h3 a {{ color:#000000; text-decoration:none; flex:1; }}
 .intel-item h3 a:hover {{ color:#4361ee; text-decoration:underline; }}
 .score {{
   font-size:0.7em; color:#fff; padding:2px 8px; border-radius:4px;
