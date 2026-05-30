@@ -81,7 +81,7 @@ def build_html():
   <div class="summary">{summary}</div>
   <div class="meta">
     <span class="source-badge">{icon} {it["source"]}</span>
-    {f'<span class="date">发布于 {it["published"]}</span>' if it.get("published") else ''}
+    <span class="date">发布于 {it.get("published") or date_cn}</span>
     <a class="origin-link" href="{it["url"]}" target="_blank">查看原文 →</a>
   </div>
 </article>'''
@@ -91,7 +91,7 @@ def build_html():
   <p class="summary">{summary[:200]}{"..." if len(summary) > 200 else ""}</p>
   <div class="meta">
     <span class="source-badge">{icon} {it["source"]}</span>
-    {f'<span class="date">{it.get("published","")}</span>' if it.get("published") else ''}
+    <span class="date">{it.get("published") or date_cn}</span>
     <a class="origin-link" href="{it["url"]}" target="_blank">查看原文 →</a>
   </div>
 </article>'''
