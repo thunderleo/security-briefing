@@ -56,7 +56,7 @@ if missing:
 
 ### 第二步：编写分析
 
-读取 `raw_data.json`，按下方规范写入 `analysis.json`。
+读取 `raw_data.json`（可用 `python SKILL_DIR/list_items.py` 列出所有条目），按下方规范写入 `analysis.json`。
 
 ### 第三步：生成页面
 
