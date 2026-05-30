@@ -23,29 +23,11 @@ SKILL_DIR 为此文档所在目录。所有脚本和数据文件均在此目录�
 
 ### 第零步：自动安装依赖
 
-执行以下 Python 代码检查并安装缺失依赖：
-
-```python
-import subprocess, sys, importlib, os, re
-req_path = os.path.join(os.path.dirname(__file__), "requirements.txt")
-missing = []
-with open(req_path) as f:
-    for line in f:
-        line = line.strip()
-        if not line or line.startswith("#"):
-            continue
-        pkg = re.split(r"[><=~!]", line)[0]
-        try:
-            importlib.import_module(pkg)
-        except ImportError:
-            missing.append(line)
-if missing:
-    pip = sys.executable + " -m pip"
-    for pkg in missing:
-        subprocess.check_call(f"{pip} install {pkg}".split())
+```bash
+python[3] -m pip install -r "SKILL_DIR/requirements.txt" -q
 ```
 
-已安装则秒过，不阻塞流程。
+可执行多次，已安装的包秒过，不阻塞流程。
 
 ### 第一步：数据抓取
 
