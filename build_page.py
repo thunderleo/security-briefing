@@ -45,7 +45,7 @@ def build_html():
             "title": it["title"],
             "url": it["url"],
             "source": it["source"],
-            "published": "",
+            "published": it.get("published", ""),
             "summary": it["analysis"],
             "original_title": it.get("original_title", ""),
             "importance": it.get("importance", ""),
@@ -80,6 +80,7 @@ def build_html():
   <div class="summary">{summary}</div>
   <div class="meta">
     <span class="source-badge">{icon} {it["source"]}</span>
+    {f'<span class="date">发布于 {it["published"]}</span>' if it.get("published") else ''}
     <a class="origin-link" href="{it["url"]}" target="_blank">查看原文 →</a>
   </div>
 </article>'''
