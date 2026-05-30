@@ -60,6 +60,7 @@ def build_html():
             "original_title": it.get("original_title", ""),
             "importance": it.get("importance", ""),
             "category": it.get("category", ""),
+            "original_category": it.get("original_category", ""),
             "is_cn": True,
         })
     total = len(all_items)
@@ -77,9 +78,11 @@ def build_html():
         if is_curated:
             imp = it.get("importance", "")
             orig = it.get("original_title", "")
-            cat = it.get("category", "")
-            cat_cfg = CATEGORY_CONFIG.get(cat, {"color": "#666"})
-            cat_badge = f'<span class="cat-badge" style="background:{cat_cfg["color"]}18;color:{cat_cfg["color"]}">{cat}</span>'
+            section_cat = it.get("category", "")
+            cat_cfg = CATEGORY_CONFIG.get(section_cat, {"color": "#666"})
+            orig_cat = it.get("original_category", "")
+            badge_label = orig_cat or section_cat
+            cat_badge = f'<span class="cat-badge" style="background:{cat_cfg["color"]}18;color:{cat_cfg["color"]}">{badge_label}</span>'
             return f'''<article class="intel-item curated">
   <div class="curated-top">
     <span class="curated-badge">★ 分析师精选</span>
