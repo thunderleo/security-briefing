@@ -16,6 +16,7 @@ SOURCE_ICONS = {
     "CISA 安全公告": "⚠️", "Dark Reading": "📡",
     "嘶吼 RoarTalk": "🇨🇳", "先知社区": "🇨🇳",
     "NVD 漏洞库": "🔴",
+    "安全内参": "🇨🇳",
 }
 
 def load_json(path):

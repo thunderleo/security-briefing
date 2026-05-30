@@ -78,6 +78,31 @@ def fetch_rss(url, name, is_cn=False):
         print(f"  [X] {name}: {e}")
     return items
 
+def fetch_secrss():
+    items = []
+    try:
+        resp = session.get("https://www.secrss.com/api/articles?page=1&per-page=20", timeout=15)
+        resp.raise_for_status()
+        data = resp.json()
+        if data.get("code") != "10000":
+            return items
+        for art in data.get("data", []):
+            title = (art.get("title") or "").strip()
+            if not title:
+                continue
+            pub = art.get("published_at", "")
+            items.append({
+                "title": title,
+                "url": f"https://www.secrss.com/articles/{art['id']}",
+                "summary": (art.get("summary") or "")[:500],
+                "source": "安全内参",
+                "published": pub,
+                "is_cn": True,
+            })
+    except Exception as e:
+        print(f"  [X] 安全内参: {e}")
+    return items
+
 def fetch_nvd():
     items = []
     now = datetime.now(timezone.utc)
@@ -141,6 +166,11 @@ def main():
         items = fetch_rss(url, name, is_cn=True)
         print(f"    {name}: {len(items)}")
         all_items.extend(items)
+
+    print("\n  安全内参...")
+    secrss = fetch_secrss()
+    print(f"    安全内参: {len(secrss)}")
+    all_items.extend(secrss)
 
     print("\n  NVD 漏洞...")
     nvd = fetch_nvd()

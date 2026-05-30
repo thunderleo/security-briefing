@@ -62,6 +62,7 @@ git clone https://github.com/你的用户名/security-briefing.git
 - Unit 42
 - 先知社区
 - 嘶吼 RoarTalk
+- 安全内参
 - NVD 漏洞库
 
 ### 输出
