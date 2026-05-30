@@ -9,6 +9,7 @@ import os
 import hashlib
 from datetime import datetime, timezone, timedelta
 from bs4 import BeautifulSoup
+import urllib.parse
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 RAW_FILE = os.path.join(BASE_DIR, "raw_data.json")
@@ -156,6 +157,87 @@ def fetch_nvd():
         print(f"  [X] NVD: {e}")
     return items
 
+CAC_URL = "https://www.cac.gov.cn/index.htm"
+CAC_SOURCE = "中国网信网"
+CAC_KEEP = [
+    "网信", "安全", "网络", "数据", "信息", "法规", "规定", "办法",
+    "通知", "意见", "指南", "标准", "监管", "治理", "合规",
+    "清朗", "整治", "专项行动", "备案",
+    "数字素养", "信息化", "人工智能", "算法", "互联网",
+    "个人信息", "数据出境", "网络暴力", "网络谣言",
+    "算法推荐", "深度合成", "生成式",
+    "个人信息保护", "网络安全",
+    "网络执法", "网络举报", "网络法治",
+]
+CAC_SKIP = [
+    "设为首页", "加入收藏", "手机版",
+    "主任信箱", "返回顶部", "学习强国",
+    "相关链接", "联系我们", "网站地图",
+    "登录", "注册", "搜索", "English",
+    "专题", "专 题",
+]
+
+def is_valid_cac_item(text, href):
+    if not text or not href:
+        return False
+    if not href.startswith("https://www.cac.gov.cn"):
+        return False
+    if any(sk in text for sk in CAC_SKIP):
+        return False
+    if re.search(r"(\.(jpg|png|gif|pdf|docx?|xlsx?|zip))$", href, re.I):
+        return False
+    if "javascript:" in href:
+        return False
+    return True
+
+def fetch_cac():
+    items = []
+    try:
+        resp = requests.get(CAC_URL, timeout=30, headers={
+            "User-Agent": "Mozilla/5.0 (compatible; SecurityBriefingBot/1.0)"
+        })
+        resp.encoding = "utf-8"
+        soup = BeautifulSoup(resp.text, "html.parser")
+    except Exception as e:
+        print(f"  [X] 中国网信网: {e}")
+        return items
+
+    seen_urls = set()
+    for a in soup.find_all("a", href=True):
+        href = urllib.parse.urljoin("https://www.cac.gov.cn", a["href"].strip())
+        text = a.get_text(strip=True)
+        if not is_valid_cac_item(text, href):
+            continue
+        if not any(kw in text for kw in CAC_KEEP):
+            continue
+        if href in seen_urls:
+            continue
+        seen_urls.add(href)
+        published = ""
+        dm = re.search(r"/(\d{4}[-/]\d{2}[-/]\d{2})/", href)
+        if not dm:
+            continue
+        published = dm.group(1).replace("/", "-")
+        try:
+            pub_date = datetime.strptime(published, "%Y-%m-%d")
+            if (datetime.now() - pub_date).days > 7:
+                continue
+        except ValueError:
+            continue
+        items.append({
+            "title": text,
+            "url": href,
+            "summary": "",
+            "source": CAC_SOURCE,
+            "published": published,
+            "is_cn": True,
+        })
+    seen2 = {}
+    for it in items:
+        if it["url"] not in seen2:
+            seen2[it["url"]] = it
+    return list(seen2.values())
+
 def main():
     print("=" * 50)
     print("  [抓取] 安全情报原始数据")
@@ -189,6 +271,11 @@ def main():
     nvd = fetch_nvd()
     print(f"    NVD: {len(nvd)}")
     all_items.extend(nvd)
+
+    print("\n  中国网信网...")
+    cac = fetch_cac()
+    print(f"    中国网信网: {len(cac)}")
+    all_items.extend(cac)
 
     seen = set()
     unique = []
