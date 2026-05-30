@@ -91,14 +91,14 @@ body {
   <div class="stats-bar">
     <div class="stat"><div class="stat-value">64</div><div class="stat-label">情报条目</div></div>
     <div class="stat"><div class="stat-value">7</div><div class="stat-label">数据来源</div></div>
-    <div class="stat"><div class="stat-value">15</div><div class="stat-label">精选推荐</div></div>
+    <div class="stat"><div class="stat-value">20</div><div class="stat-label">精选推荐</div></div>
   </div>
 </div>
 <div class="container">
   <p class="last-update">🔄 更新于 2026-05-30 20:54:56</p>
 
   <section class="source-group curated-section">
-  <h2 class="source-title">★ 今日精选情报 <span class="count">(15 条)</span></h2>
+  <h2 class="source-title">★ 今日精选情报 <span class="count">(20 条)</span></h2>
   <p class="curated-desc">以下为 AI 分析师从 64 条原始情报中筛选的重要信息，附完整分析总结</p>
   <div class="items"><article class="intel-item curated">
   <div class="curated-top">
@@ -323,6 +323,81 @@ body {
     <span class="source-badge">🇨🇳 嘶吼 RoarTalk</span>
     <span class="date">发布于 2026年05月30日</span>
     <a class="origin-link" href="https://www.4hou.com/posts/8gPj" target="_blank">查看原文 →</a>
+  </div>
+</article>
+<article class="intel-item curated">
+  <div class="curated-top">
+    <span class="curated-badge">★ 分析师精选</span>
+    <span class="cat-badge">新型攻击</span>
+    <span class='importance'>★★★★★</span>
+  </div>
+  <h3><a href="https://thehackernews.com/2026/05/chatgphish-vulnerability-turns-chatgpt.html" target="_blank" rel="noopener">ChatGPhish 漏洞：ChatGPT 网页摘要功能可被用于钓鱼攻击</a></h3>
+  <p class="original-title">原文: ChatGPhish Vulnerability Turns ChatGPT Web Summaries Into a Phishing Surface</p>
+  <div class="summary">Permiso Security 披露了 ChatGPT 的一个漏洞 ChatGPhish：攻击者利用 ChatGPT 对 Markdown 链接和图片的隐式信任，在网页摘要中嵌入恶意内容实现提示注入和钓鱼攻击。与之前分享链接被滥用分发恶意软件不同，ChatGPhish 攻击的是 ChatGPT 自身的渲染机制。这种针对 AI 平台的新型攻击面需要从产品设计层面修复，而非仅靠用户教育。建议企业限制 ChatGPT 在企业环境中的网页摘要功能使用。</div>
+  <div class="meta">
+    <span class="source-badge">📰 The Hacker News</span>
+    <span class="date">发布于 2026年05月30日</span>
+    <a class="origin-link" href="https://thehackernews.com/2026/05/chatgphish-vulnerability-turns-chatgpt.html" target="_blank">查看原文 →</a>
+  </div>
+</article>
+<article class="intel-item curated">
+  <div class="curated-top">
+    <span class="curated-badge">★ 分析师精选</span>
+    <span class="cat-badge">新型攻击</span>
+    <span class='importance'>★★★★★</span>
+  </div>
+  <h3><a href="https://thehackernews.com/2026/05/attackers-use-llm-agent-for-post.html" target="_blank" rel="noopener">攻击者利用 LLM Agent 实施后渗透，CVE-2026-39987 漏洞利用链曝光</a></h3>
+  <p class="original-title">原文: Attackers Use LLM Agent for Post-Exploitation After Marimo CVE-2026-39987 Exploit</p>
+  <div class="summary">威胁行为者在利用 Marimo CVE-2026-39987 漏洞获取初始访问后，使用 LLM Agent 执行后渗透操作。攻击者让 AI Agent 协助提取云凭证、遍历网络环境、搜索敏感文件并打包外传——整个过程高度自动化。这是 LLM Agent 被用于真实攻击后渗透的早期案例，标志着 AI 驱动的攻击链已从概念验证走向实战。企业应加强对 Marimo 等开源数据科学工具的访问控制，并监控云 API 调用的异常模式。</div>
+  <div class="meta">
+    <span class="source-badge">📰 The Hacker News</span>
+    <span class="date">发布于 2026年05月30日</span>
+    <a class="origin-link" href="https://thehackernews.com/2026/05/attackers-use-llm-agent-for-post.html" target="_blank">查看原文 →</a>
+  </div>
+</article>
+<article class="intel-item curated">
+  <div class="curated-top">
+    <span class="curated-badge">★ 分析师精选</span>
+    <span class="cat-badge">漏洞预警</span>
+    <span class='importance'>★★★★★</span>
+  </div>
+  <h3><a href="https://www.4hou.com/posts/MXOm" target="_blank" rel="noopener">Progress ShareFile 曝新漏洞组合链，可无需认证远程执行代码</a></h3>
+  <p class="original-title">原文: Progress ShareFile曝新漏洞 可组合实现未认证远程代码执行</p>
+  <div class="summary">watchTowr 在 Progress ShareFile 5.x 分支的 Storage Zones Controller 中发现认证绕过（CVE-2026-2699）和 RCE（CVE-2026-2701）两个漏洞，可组合实现未认证远程代码执行。ShareFile 是广泛使用的企业级安全文件传输方案，历史上 Clop 等勒索团伙曾频繁利用同类产品（如 MOVEit、GoAnywhere）的漏洞进行大规模数据窃取。建议使用 ShareFile 的企业立即更新 SZC 组件，并在补丁无法安装时启用网络隔离。</div>
+  <div class="meta">
+    <span class="source-badge">🇨🇳 嘶吼 RoarTalk</span>
+    <span class="date">发布于 2026年05月30日</span>
+    <a class="origin-link" href="https://www.4hou.com/posts/MXOm" target="_blank">查看原文 →</a>
+  </div>
+</article>
+<article class="intel-item curated">
+  <div class="curated-top">
+    <span class="curated-badge">★ 分析师精选</span>
+    <span class="cat-badge">新型攻击</span>
+    <span class='importance'>★★★★☆</span>
+  </div>
+  <h3><a href="https://www.bleepingcomputer.com/news/security/from-5-attacks-to-botnet-powered-platforms-inside-the-ddos-as-a-service-market/" target="_blank" rel="noopener">DDoS即服务市场兴起：从 5 美元攻击到 Botnet 驱动的平台化运营</a></h3>
+  <p class="original-title">原文: From $5 Attacks to Botnet-Powered Platforms: Inside the DDoS-as-a-Service Market</p>
+  <div class="summary">Flare 报告揭示 DDoS 攻击正以订阅服务模式出售，包含定价层级、客服支持和代理分销体系。DDoS-as-a-Service 市场已从零散工具演变为成熟的攻击平台，入门价格低至 5 美元，配合 Botnet 驱动的放大攻击能力可造成严重业务中断。国内企业应重点强化 DDoS 防御的自动化清洗和容量规划，尤其是在电商促销、关键业务发布等时间节点。</div>
+  <div class="meta">
+    <span class="source-badge">💻 BleepingComputer</span>
+    <span class="date">发布于 2026年05月30日</span>
+    <a class="origin-link" href="https://www.bleepingcomputer.com/news/security/from-5-attacks-to-botnet-powered-platforms-inside-the-ddos-as-a-service-market/" target="_blank">查看原文 →</a>
+  </div>
+</article>
+<article class="intel-item curated">
+  <div class="curated-top">
+    <span class="curated-badge">★ 分析师精选</span>
+    <span class="cat-badge">供应链安全</span>
+    <span class='importance'>★★★★★</span>
+  </div>
+  <h3><a href="https://www.secrss.com/articles/90772" target="_blank" rel="noopener">超六成 AI 供应商未告知客户，偷偷将甲方数据发给未授权模型</a></h3>
+  <p class="original-title">原文: 超六成AI供应商未告知客户，偷偷将甲方数据发给未授权模型</p>
+  <div class="summary">DataGrail 分析了 2400 家热门商业软件供应商，发现 63.6% 以 AI 为核心卖点的供应商未在法律文件中披露第三方 AI 分包处理方。这意味着采购了 AI 增强型软件的甲方企业可能在毫不知情的情况下，将客户数据暴露给未审查的第三方 AI 模型。漏洞在于传统 DPA（数据处理协议）已无法跟上 AI 供应链的复杂度和演进速度。建议企业采购 AI 软件时，要求供应商提供完整的 AI 子处理方清单并写入合同条款。</div>
+  <div class="meta">
+    <span class="source-badge">🇨🇳 安全内参</span>
+    <span class="date">发布于 2026年05月30日</span>
+    <a class="origin-link" href="https://www.secrss.com/articles/90772" target="_blank">查看原文 →</a>
   </div>
 </article></div>
 </section>
