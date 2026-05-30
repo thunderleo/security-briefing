@@ -19,6 +19,15 @@ SOURCE_ICONS = {
     "安全内参": "🇨🇳",
 }
 
+CATEGORY_ORDER = ["漏洞利用", "漏洞风险", "安全事件", "政策法规", "解读分析"]
+CATEGORY_CONFIG = {
+    "漏洞利用": {"icon": "🎯", "color": "#dc2626"},
+    "漏洞风险": {"icon": "⚠️", "color": "#ea580c"},
+    "安全事件": {"icon": "🚨", "color": "#d97706"},
+    "政策法规": {"icon": "📜", "color": "#2563eb"},
+    "解读分析": {"icon": "🔍", "color": "#7c3aed"},
+}
+
 def load_json(path):
     if not os.path.exists(path):
         print(f"  [X] 文件不存在: {path}")
@@ -67,13 +76,10 @@ def build_html():
 
         if is_curated:
             imp = it.get("importance", "")
-            cat = it.get("category", "")
             orig = it.get("original_title", "")
-            cat_badge = f'<span class="cat-badge">{cat}</span>' if cat else ''
             return f'''<article class="intel-item curated">
   <div class="curated-top">
     <span class="curated-badge">★ 分析师精选</span>
-    {cat_badge}
     {"<span class='importance'>" + imp + "</span>" if imp else ""}
   </div>
   <h3><a href="{it["url"]}" target="_blank" rel="noopener">{title}</a>{score_badge}</h3>
@@ -99,12 +105,28 @@ def build_html():
     cur_html = ""
 
     if curated_items:
-        cur_list = "\n".join(render_item(it, True) for it in curated_items)
-        cur_html = f'''<section class="source-group curated-section">
-  <h2 class="source-title">★ 今日精选情报 <span class="count">({len(curated_items)} 条)</span></h2>
-  <p class="curated-desc">以下为 AI 分析师从 {total} 条原始情报中筛选的重要信息，附完整分析总结</p>
-  <div class="items">{cur_list}</div>
-</section>'''
+        from collections import OrderedDict
+        grouped = OrderedDict()
+        for cat in CATEGORY_ORDER:
+            grouped[cat] = []
+        for it in curated_items:
+            cat = it.get("category", "")
+            if cat in grouped:
+                grouped[cat].append(it)
+
+        sections = []
+        for cat, items in grouped.items():
+            if not items:
+                continue
+            cfg = CATEGORY_CONFIG.get(cat, {"icon": "📌", "color": "#666"})
+            item_html = "\n".join(render_item(it, True) for it in items)
+            sections.append(f'''<section class="cat-section" style="border-top:3px solid {cfg['color']};">
+  <h2 class="cat-section-title">{cfg['icon']} {cat} <span class="count">({len(items)} 条)</span></h2>
+  <div class="items">{item_html}</div>
+</section>''')
+
+        cur_html = f'''<p class="curated-intro">以下为 AI 分析师从 {total} 条原始情报中筛选的重要信息，按分类展示</p>
+{"".join(sections)}'''
 
     html = f'''<!DOCTYPE html>
 <html lang="zh-CN">
@@ -136,8 +158,14 @@ body {{
 .container {{ max-width:900px; margin:0 auto; padding:24px 16px; }}
 .last-update {{ text-align:right; font-size:0.85em; color:#888; margin-bottom:20px; }}
 
-.curated-section {{ margin-bottom:40px; }}
-.curated-desc {{ font-size:0.85em; color:#666; margin-bottom:16px; padding-left:4px; }}
+.curated-intro {{ font-size:0.85em; color:#666; margin-bottom:20px; padding-left:4px; }}
+.cat-section {{ margin-bottom:28px; padding-top:12px; }}
+.cat-section-title {{
+  font-size:1.15em; font-weight:600; color:#1a1a2e;
+  margin-bottom:14px; display:flex; align-items:center; gap:8px;
+}}
+.cat-section-title .count {{ font-size:0.8em; color:#888; font-weight:400; }}
+
 .intel-item.curated {{
   border-left: 4px solid #f59e0b;
   background: linear-gradient(135deg, #fffbeb 0%, #fff 100%);
@@ -150,21 +178,8 @@ body {{
 .intel-item.curated .summary {{ font-size:0.92em; color:#333; line-height:1.7; }}
 .original-title {{ font-size:0.78em; color:#999; margin-bottom:6px; }}
 .curated-top {{ display:flex; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap; }}
-.cat-badge {{ display:inline-block; background:#e0e7ff; color:#4338ca; font-size:0.72em; font-weight:500; padding:2px 10px; border-radius:4px; }}
 .importance {{ font-size:0.8em; color:#f59e0b; letter-spacing:1px; }}
-
-.source-group {{ margin-bottom:32px; }}
-.source-title {{
-  font-size:1.15em; font-weight:600; color:#1a1a2e;
-  padding-bottom:10px; border-bottom:2px solid #e2e8f0;
-  margin-bottom:16px; display:flex; align-items:center; gap:8px;
-}}
-.source-title .count {{ font-size:0.8em; color:#888; font-weight:400; }}
 .intel-item {{
-  background:#fff; border-radius:10px; padding:18px 20px;
-  margin-bottom:12px; box-shadow:0 1px 3px rgba(0,0,0,0.06);
-  transition:box-shadow 0.2s, transform 0.15s;
-}}
 .intel-item:hover {{ box-shadow:0 4px 12px rgba(0,0,0,0.1); transform:translateY(-1px); }}
 .intel-item h3 {{
   font-size:1em; font-weight:600; margin-bottom:6px;

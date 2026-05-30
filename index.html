@@ -28,8 +28,14 @@ body {
 .container { max-width:900px; margin:0 auto; padding:24px 16px; }
 .last-update { text-align:right; font-size:0.85em; color:#888; margin-bottom:20px; }
 
-.curated-section { margin-bottom:40px; }
-.curated-desc { font-size:0.85em; color:#666; margin-bottom:16px; padding-left:4px; }
+.curated-intro { font-size:0.85em; color:#666; margin-bottom:20px; padding-left:4px; }
+.cat-section { margin-bottom:28px; padding-top:12px; }
+.cat-section-title {
+  font-size:1.15em; font-weight:600; color:#1a1a2e;
+  margin-bottom:14px; display:flex; align-items:center; gap:8px;
+}
+.cat-section-title .count { font-size:0.8em; color:#888; font-weight:400; }
+
 .intel-item.curated {
   border-left: 4px solid #f59e0b;
   background: linear-gradient(135deg, #fffbeb 0%, #fff 100%);
@@ -42,21 +48,8 @@ body {
 .intel-item.curated .summary { font-size:0.92em; color:#333; line-height:1.7; }
 .original-title { font-size:0.78em; color:#999; margin-bottom:6px; }
 .curated-top { display:flex; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap; }
-.cat-badge { display:inline-block; background:#e0e7ff; color:#4338ca; font-size:0.72em; font-weight:500; padding:2px 10px; border-radius:4px; }
 .importance { font-size:0.8em; color:#f59e0b; letter-spacing:1px; }
-
-.source-group { margin-bottom:32px; }
-.source-title {
-  font-size:1.15em; font-weight:600; color:#1a1a2e;
-  padding-bottom:10px; border-bottom:2px solid #e2e8f0;
-  margin-bottom:16px; display:flex; align-items:center; gap:8px;
-}
-.source-title .count { font-size:0.8em; color:#888; font-weight:400; }
 .intel-item {
-  background:#fff; border-radius:10px; padding:18px 20px;
-  margin-bottom:12px; box-shadow:0 1px 3px rgba(0,0,0,0.06);
-  transition:box-shadow 0.2s, transform 0.15s;
-}
 .intel-item:hover { box-shadow:0 4px 12px rgba(0,0,0,0.1); transform:translateY(-1px); }
 .intel-item h3 {
   font-size:1em; font-weight:600; margin-bottom:6px;
@@ -97,13 +90,28 @@ body {
 <div class="container">
   <p class="last-update">🔄 更新于 2026-05-30 20:54:56</p>
 
-  <section class="source-group curated-section">
-  <h2 class="source-title">★ 今日精选情报 <span class="count">(20 条)</span></h2>
-  <p class="curated-desc">以下为 AI 分析师从 64 条原始情报中筛选的重要信息，附完整分析总结</p>
+  <p class="curated-intro">以下为 AI 分析师从 64 条原始情报中筛选的重要信息，按分类展示</p>
+<section class="cat-section" style="border-top:3px solid #dc2626;">
+  <h2 class="cat-section-title">🎯 漏洞利用 <span class="count">(1 条)</span></h2>
   <div class="items"><article class="intel-item curated">
   <div class="curated-top">
     <span class="curated-badge">★ 分析师精选</span>
-    <span class="cat-badge">漏洞预警</span>
+    <span class='importance'>★★★★★</span>
+  </div>
+  <h3><a href="https://thehackernews.com/2026/05/pan-os-globalprotect-authentication.html" target="_blank" rel="noopener">PAN-OS GlobalProtect 认证绕过漏洞（CVE-2026-0257）已遭在野利用</a></h3>
+  <p class="original-title">原文: PAN-OS GlobalProtect Authentication Bypass (CVE-2026-0257) Under Active Exploitation</p>
+  <div class="summary">Palo Alto Networks 发出警告，PAN-OS 和 Prisma Access 的认证绕过漏洞（CVE-2026-0257，CVSS 7.8）已遭在野利用，攻击者可借此建立 VPN 连接绕过身份验证。GlobalProtect 是企业远程接入的核心组件，国内大量使用 Palo Alto 防火墙的企业应优先排查受影响版本，立即安装安全更新，并审计 VPN 连接日志中的异常认证记录。</div>
+  <div class="meta">
+    <span class="source-badge">📰 The Hacker News</span>
+    <span class="date">发布于 2026年05月30日</span>
+    <a class="origin-link" href="https://thehackernews.com/2026/05/pan-os-globalprotect-authentication.html" target="_blank">查看原文 →</a>
+  </div>
+</article></div>
+</section><section class="cat-section" style="border-top:3px solid #ea580c;">
+  <h2 class="cat-section-title">⚠️ 漏洞风险 <span class="count">(4 条)</span></h2>
+  <div class="items"><article class="intel-item curated">
+  <div class="curated-top">
+    <span class="curated-badge">★ 分析师精选</span>
     <span class='importance'>★★★★★</span>
   </div>
   <h3><a href="https://thehackernews.com/2026/05/critical-gogs-rce-vulnerability-lets.html" target="_blank" rel="noopener">Gogs 自托管 Git 服务曝严重 RCE 漏洞（CVSS 9.4），已认证用户可远程执行任意代码</a></h3>
@@ -118,112 +126,6 @@ body {
 <article class="intel-item curated">
   <div class="curated-top">
     <span class="curated-badge">★ 分析师精选</span>
-    <span class="cat-badge">漏洞预警</span>
-    <span class='importance'>★★★★★</span>
-  </div>
-  <h3><a href="https://thehackernews.com/2026/05/pan-os-globalprotect-authentication.html" target="_blank" rel="noopener">PAN-OS GlobalProtect 认证绕过漏洞（CVE-2026-0257）已遭在野利用</a></h3>
-  <p class="original-title">原文: PAN-OS GlobalProtect Authentication Bypass (CVE-2026-0257) Under Active Exploitation</p>
-  <div class="summary">Palo Alto Networks 发出警告，PAN-OS 和 Prisma Access 的认证绕过漏洞（CVE-2026-0257，CVSS 7.8）已遭在野利用，攻击者可借此建立 VPN 连接绕过身份验证。GlobalProtect 是企业远程接入的核心组件，国内大量使用 Palo Alto 防火墙的企业应优先排查受影响版本，立即安装安全更新，并审计 VPN 连接日志中的异常认证记录。</div>
-  <div class="meta">
-    <span class="source-badge">📰 The Hacker News</span>
-    <span class="date">发布于 2026年05月30日</span>
-    <a class="origin-link" href="https://thehackernews.com/2026/05/pan-os-globalprotect-authentication.html" target="_blank">查看原文 →</a>
-  </div>
-</article>
-<article class="intel-item curated">
-  <div class="curated-top">
-    <span class="curated-badge">★ 分析师精选</span>
-    <span class="cat-badge">新型攻击</span>
-    <span class='importance'>★★★★★</span>
-  </div>
-  <h3><a href="https://www.bleepingcomputer.com/news/security/chatgpt-share-links-abused-to-host-fake-outage-pages-to-deliver-malware/" target="_blank" rel="noopener">ChatGPT 分享链接被滥用于托管虚假故障页面分发恶意软件</a></h3>
-  <p class="original-title">原文: ChatGPT share links abused to host fake outage pages to deliver malware</p>
-  <div class="summary">威胁行为者正在滥用 ChatGPT 的分享链接功能，托管虚假的 OpenAI 故障页面，诱导用户下载伪装成 ChatGPT 桌面版应用的恶意软件。攻击者利用 chatgpt.com 的可信域名来绕过传统 URL 检测机制。这是继 ChatGPhish 之后又一起针对 ChatGPT 平台的滥用事件，建议企业安全团队将 AI 平台域名纳入 Web 过滤监控白名单，同时对员工进行 AI 平台钓鱼攻击的安全意识培训。</div>
-  <div class="meta">
-    <span class="source-badge">💻 BleepingComputer</span>
-    <span class="date">发布于 2026年05月30日</span>
-    <a class="origin-link" href="https://www.bleepingcomputer.com/news/security/chatgpt-share-links-abused-to-host-fake-outage-pages-to-deliver-malware/" target="_blank">查看原文 →</a>
-  </div>
-</article>
-<article class="intel-item curated">
-  <div class="curated-top">
-    <span class="curated-badge">★ 分析师精选</span>
-    <span class="cat-badge">执法行动</span>
-    <span class='importance'>★★★★★</span>
-  </div>
-  <h3><a href="https://www.bleepingcomputer.com/news/security/dutch-govt-disrupts-malware-botnet-with-17-million-infected-devices/" target="_blank" rel="noopener">荷兰当局摧毁 1700 万设备规模的恶意僵尸网络</a></h3>
-  <p class="original-title">原文: Dutch govt disrupts malware botnet with 17 million infected devices</p>
-  <div class="summary">荷兰执法部门成功摧毁了一个感染规模达 1700 万设备的恶意僵尸网络，在当地托管商处查封了 200 多台服务器。这是近年来规模最大的僵尸网络打击行动之一，涉及设备数量超过此前知名的 Emotet 和 TrickBot 僵尸网络。此次行动凸显了跨国执法协作在大规模 botnet 取缔中的关键作用，也提醒防守方需要重视 IoT 设备的安全基线管理。</div>
-  <div class="meta">
-    <span class="source-badge">💻 BleepingComputer</span>
-    <span class="date">发布于 2026年05月30日</span>
-    <a class="origin-link" href="https://www.bleepingcomputer.com/news/security/dutch-govt-disrupts-malware-botnet-with-17-million-infected-devices/" target="_blank">查看原文 →</a>
-  </div>
-</article>
-<article class="intel-item curated">
-  <div class="curated-top">
-    <span class="curated-badge">★ 分析师精选</span>
-    <span class="cat-badge">数据泄露</span>
-    <span class='importance'>★★★★★</span>
-  </div>
-  <h3><a href="https://www.bleepingcomputer.com/news/security/charter-communications-data-breach-affects-49-million-accounts/" target="_blank" rel="noopener">Charter Communications 数据泄露影响 490 万账户，ShinyHunters 团伙认领</a></h3>
-  <p class="original-title">原文: Charter Communications data breach affects 4.9 million accounts</p>
-  <div class="summary">ShinyHunters 勒索团伙通过入侵美国电信巨头 Charter Communications 窃取了 490 万账户的个人信息，数据包含姓名、联系方式、账户详情等敏感字段。Charter 是美国第二大有线电视运营商，此次泄露影响范围广泛。值得注意的是，ShinyHunters 近日还声称攻击了邮轮巨头嘉年华集团，显示该团伙正处于活跃期。建议使用 Charter 服务的用户立即更改密码并启用多因素认证。</div>
-  <div class="meta">
-    <span class="source-badge">💻 BleepingComputer</span>
-    <span class="date">发布于 2026年05月30日</span>
-    <a class="origin-link" href="https://www.bleepingcomputer.com/news/security/charter-communications-data-breach-affects-49-million-accounts/" target="_blank">查看原文 →</a>
-  </div>
-</article>
-<article class="intel-item curated">
-  <div class="curated-top">
-    <span class="curated-badge">★ 分析师精选</span>
-    <span class="cat-badge">安全趋势</span>
-    <span class='importance'>★★★★★</span>
-  </div>
-  <h3><a href="https://www.bleepingcomputer.com/news/security/us-charges-google-security-engineer-with-polymarket-insider-trading/" target="_blank" rel="noopener">谷歌安全工程师因 Polymarket 内幕交易被起诉</a></h3>
-  <p class="original-title">原文: US charges Google security engineer with Polymarket insider trading</p>
-  <div class="summary">美国司法部指控一名谷歌安全工程师利用公司机密数据在去中心化预测市场 Polymarket 上下注，获利 120 万美元。这是首起涉及安全人员利用内部信息在加密货币预测市场交易的内幕交易案，预示监管机构开始将传统证券法的内幕交易框架延伸到 Web3 预测市场。企业应加强对员工访问内部数据的审计，尤其是安全团队——他们通常拥有最高级别的系统访问权限。</div>
-  <div class="meta">
-    <span class="source-badge">💻 BleepingComputer</span>
-    <span class="date">发布于 2026年05月30日</span>
-    <a class="origin-link" href="https://www.bleepingcomputer.com/news/security/us-charges-google-security-engineer-with-polymarket-insider-trading/" target="_blank">查看原文 →</a>
-  </div>
-</article>
-<article class="intel-item curated">
-  <div class="curated-top">
-    <span class="curated-badge">★ 分析师精选</span>
-    <span class="cat-badge">数据泄露</span>
-    <span class='importance'>★★★★☆</span>
-  </div>
-  <h3><a href="https://www.bleepingcomputer.com/news/security/california-ag-sues-23andme-over-2023-breach-exposing-health-data/" target="_blank" rel="noopener">加州总检察长起诉 23andMe 2023 年数据泄露案</a></h3>
-  <p class="original-title">原文: California AG sues 23andMe over 2023 breach exposing health data</p>
-  <div class="summary">加州总检察长 Rob Bonta 对基因检测公司 23andMe（现 Chrome Holding Co.）提起诉讼，指控其未能保护敏感客户基因和个人信息。2023 年的大规模泄露暴露了数百万用户的遗传数据和家族关系信息。基因数据的敏感性远超普通身份信息——泄露的后果不可逆转（无法更改 DNA）。此案将可能确立基因数据保护的法律先例，生物识别信息领域的从业者应密切关注诉讼进展。</div>
-  <div class="meta">
-    <span class="source-badge">💻 BleepingComputer</span>
-    <span class="date">发布于 2026年05月30日</span>
-    <a class="origin-link" href="https://www.bleepingcomputer.com/news/security/california-ag-sues-23andme-over-2023-breach-exposing-health-data/" target="_blank">查看原文 →</a>
-  </div>
-</article>
-<article class="intel-item curated">
-  <div class="curated-top">
-    <span class="curated-badge">★ 分析师精选</span>
-    <span class="cat-badge">安全技术</span>
-    <span class='importance'>★★★★★</span>
-  </div>
-  <h3><a href="https://www.bleepingcomputer.com/news/security/google-chrome-adds-session-cookie-theft-protection-for-all-users/" target="_blank" rel="noopener">Google Chrome 向所有用户推出 Device Bound Session Credentials 防会话 Cookie 窃取</a></h3>
-  <p class="original-title">原文: Google Chrome adds session cookie theft protection for all users</p>
-  <div class="summary">Google 宣布 Chrome 的 Device Bound Session Credentials（DBSC）功能现已正式向所有用户推出，用于防御会话 Cookie 窃取攻击。DBSC 将登录凭证绑定到特定设备，即使攻击者通过恶意软件窃取了 Cookie，也无法在其他设备上重用。这一机制能有效防御近年来日益猖獗的信息窃取恶意软件（如 RedLine、Raccoon Stealer 等）发起的会话劫持攻击，建议企业确保用户 Chrome 浏览器更新至最新版本以启用此功能。</div>
-  <div class="meta">
-    <span class="source-badge">💻 BleepingComputer</span>
-    <span class="date">发布于 2026年05月30日</span>
-    <a class="origin-link" href="https://www.bleepingcomputer.com/news/security/google-chrome-adds-session-cookie-theft-protection-for-all-users/" target="_blank">查看原文 →</a>
-  </div>
-</article>
-<article class="intel-item curated">
-  <div class="curated-top">
-    <span class="curated-badge">★ 分析师精选</span>
-    <span class="cat-badge">漏洞预警</span>
     <span class='importance'>★★★★★</span>
   </div>
   <h3><a href="https://xz.aliyun.com/news/92188" target="_blank" rel="noopener">亿赛通 CDG 文件服务器任意文件上传漏洞，国内大量政企受影响</a></h3>
@@ -238,7 +140,6 @@ body {
 <article class="intel-item curated">
   <div class="curated-top">
     <span class="curated-badge">★ 分析师精选</span>
-    <span class="cat-badge">漏洞预警</span>
     <span class='importance'>★★★★★</span>
   </div>
   <h3><a href="https://www.secrss.com/articles/90796" target="_blank" rel="noopener">Linux Kernel CIFSwitch 本地权限提升漏洞（QVD-2026-29453，CVSS 7.8）PoC 已公开</a></h3>
@@ -253,22 +154,78 @@ body {
 <article class="intel-item curated">
   <div class="curated-top">
     <span class="curated-badge">★ 分析师精选</span>
-    <span class="cat-badge">安全技术</span>
     <span class='importance'>★★★★★</span>
   </div>
-  <h3><a href="https://www.secrss.com/articles/90799" target="_blank" rel="noopener">Anthropic 发布 AI Agent 零信任安全框架，五类风险三层架构应对 Agent 安全挑战</a></h3>
-  <p class="original-title">原文: AI Agent零信任框架：五大风险、三层架构与八阶段实施流程</p>
-  <div class="summary">Anthropic 发布《Zero Trust for AI Agents》白皮书，系统性地提出了面向 AI Agent 部署的安全架构。核心判断是：Agent 不同于聊天机器人——它能调用工具、访问数据、自主执行，传统访问控制无法阻止 Agent 滥用合法权限。框架覆盖 Agent 特有的五大风险（提示注入、权限扩散、记忆投毒等），提出三层零信任架构和八阶段实施流程。所有引入 AI Agent 的企业安全团队都应阅读此白皮书。</div>
+  <h3><a href="https://www.4hou.com/posts/MXOm" target="_blank" rel="noopener">Progress ShareFile 曝新漏洞组合链，可无需认证远程执行代码</a></h3>
+  <p class="original-title">原文: Progress ShareFile曝新漏洞 可组合实现未认证远程代码执行</p>
+  <div class="summary">watchTowr 在 Progress ShareFile 5.x 分支的 Storage Zones Controller 中发现认证绕过（CVE-2026-2699）和 RCE（CVE-2026-2701）两个漏洞，可组合实现未认证远程代码执行。ShareFile 是广泛使用的企业级安全文件传输方案，历史上 Clop 等勒索团伙曾频繁利用同类产品（如 MOVEit、GoAnywhere）的漏洞进行大规模数据窃取。建议使用 ShareFile 的企业立即更新 SZC 组件，并在补丁无法安装时启用网络隔离。</div>
   <div class="meta">
-    <span class="source-badge">🇨🇳 安全内参</span>
+    <span class="source-badge">🇨🇳 嘶吼 RoarTalk</span>
     <span class="date">发布于 2026年05月30日</span>
-    <a class="origin-link" href="https://www.secrss.com/articles/90799" target="_blank">查看原文 →</a>
+    <a class="origin-link" href="https://www.4hou.com/posts/MXOm" target="_blank">查看原文 →</a>
+  </div>
+</article></div>
+</section><section class="cat-section" style="border-top:3px solid #d97706;">
+  <h2 class="cat-section-title">🚨 安全事件 <span class="count">(9 条)</span></h2>
+  <div class="items"><article class="intel-item curated">
+  <div class="curated-top">
+    <span class="curated-badge">★ 分析师精选</span>
+    <span class='importance'>★★★★★</span>
+  </div>
+  <h3><a href="https://www.bleepingcomputer.com/news/security/chatgpt-share-links-abused-to-host-fake-outage-pages-to-deliver-malware/" target="_blank" rel="noopener">ChatGPT 分享链接被滥用于托管虚假故障页面分发恶意软件</a></h3>
+  <p class="original-title">原文: ChatGPT share links abused to host fake outage pages to deliver malware</p>
+  <div class="summary">威胁行为者正在滥用 ChatGPT 的分享链接功能，托管虚假的 OpenAI 故障页面，诱导用户下载伪装成 ChatGPT 桌面版应用的恶意软件。攻击者利用 chatgpt.com 的可信域名来绕过传统 URL 检测机制。这是继 ChatGPhish 之后又一起针对 ChatGPT 平台的滥用事件，建议企业安全团队将 AI 平台域名纳入 Web 过滤监控白名单，同时对员工进行 AI 平台钓鱼攻击的安全意识培训。</div>
+  <div class="meta">
+    <span class="source-badge">💻 BleepingComputer</span>
+    <span class="date">发布于 2026年05月30日</span>
+    <a class="origin-link" href="https://www.bleepingcomputer.com/news/security/chatgpt-share-links-abused-to-host-fake-outage-pages-to-deliver-malware/" target="_blank">查看原文 →</a>
   </div>
 </article>
 <article class="intel-item curated">
   <div class="curated-top">
     <span class="curated-badge">★ 分析师精选</span>
-    <span class="cat-badge">数据泄露</span>
+    <span class='importance'>★★★★★</span>
+  </div>
+  <h3><a href="https://www.bleepingcomputer.com/news/security/dutch-govt-disrupts-malware-botnet-with-17-million-infected-devices/" target="_blank" rel="noopener">荷兰当局摧毁 1700 万设备规模的恶意僵尸网络</a></h3>
+  <p class="original-title">原文: Dutch govt disrupts malware botnet with 17 million infected devices</p>
+  <div class="summary">荷兰执法部门成功摧毁了一个感染规模达 1700 万设备的恶意僵尸网络，在当地托管商处查封了 200 多台服务器。这是近年来规模最大的僵尸网络打击行动之一，涉及设备数量超过此前知名的 Emotet 和 TrickBot 僵尸网络。此次行动凸显了跨国执法协作在大规模 botnet 取缔中的关键作用，也提醒防守方需要重视 IoT 设备的安全基线管理。</div>
+  <div class="meta">
+    <span class="source-badge">💻 BleepingComputer</span>
+    <span class="date">发布于 2026年05月30日</span>
+    <a class="origin-link" href="https://www.bleepingcomputer.com/news/security/dutch-govt-disrupts-malware-botnet-with-17-million-infected-devices/" target="_blank">查看原文 →</a>
+  </div>
+</article>
+<article class="intel-item curated">
+  <div class="curated-top">
+    <span class="curated-badge">★ 分析师精选</span>
+    <span class='importance'>★★★★★</span>
+  </div>
+  <h3><a href="https://www.bleepingcomputer.com/news/security/charter-communications-data-breach-affects-49-million-accounts/" target="_blank" rel="noopener">Charter Communications 数据泄露影响 490 万账户，ShinyHunters 团伙认领</a></h3>
+  <p class="original-title">原文: Charter Communications data breach affects 4.9 million accounts</p>
+  <div class="summary">ShinyHunters 勒索团伙通过入侵美国电信巨头 Charter Communications 窃取了 490 万账户的个人信息，数据包含姓名、联系方式、账户详情等敏感字段。Charter 是美国第二大有线电视运营商，此次泄露影响范围广泛。值得注意的是，ShinyHunters 近日还声称攻击了邮轮巨头嘉年华集团，显示该团伙正处于活跃期。建议使用 Charter 服务的用户立即更改密码并启用多因素认证。</div>
+  <div class="meta">
+    <span class="source-badge">💻 BleepingComputer</span>
+    <span class="date">发布于 2026年05月30日</span>
+    <a class="origin-link" href="https://www.bleepingcomputer.com/news/security/charter-communications-data-breach-affects-49-million-accounts/" target="_blank">查看原文 →</a>
+  </div>
+</article>
+<article class="intel-item curated">
+  <div class="curated-top">
+    <span class="curated-badge">★ 分析师精选</span>
+    <span class='importance'>★★★★★</span>
+  </div>
+  <h3><a href="https://www.bleepingcomputer.com/news/security/us-charges-google-security-engineer-with-polymarket-insider-trading/" target="_blank" rel="noopener">谷歌安全工程师因 Polymarket 内幕交易被起诉</a></h3>
+  <p class="original-title">原文: US charges Google security engineer with Polymarket insider trading</p>
+  <div class="summary">美国司法部指控一名谷歌安全工程师利用公司机密数据在去中心化预测市场 Polymarket 上下注，获利 120 万美元。这是首起涉及安全人员利用内部信息在加密货币预测市场交易的内幕交易案，预示监管机构开始将传统证券法的内幕交易框架延伸到 Web3 预测市场。企业应加强对员工访问内部数据的审计，尤其是安全团队——他们通常拥有最高级别的系统访问权限。</div>
+  <div class="meta">
+    <span class="source-badge">💻 BleepingComputer</span>
+    <span class="date">发布于 2026年05月30日</span>
+    <a class="origin-link" href="https://www.bleepingcomputer.com/news/security/us-charges-google-security-engineer-with-polymarket-insider-trading/" target="_blank">查看原文 →</a>
+  </div>
+</article>
+<article class="intel-item curated">
+  <div class="curated-top">
+    <span class="curated-badge">★ 分析师精选</span>
     <span class='importance'>★★★★★</span>
   </div>
   <h3><a href="https://www.secrss.com/articles/90818" target="_blank" rel="noopener">邮轮巨头嘉年华集团 600 万客户数据泄露，中国用户需警惕跨境钓鱼</a></h3>
@@ -283,7 +240,6 @@ body {
 <article class="intel-item curated">
   <div class="curated-top">
     <span class="curated-badge">★ 分析师精选</span>
-    <span class="cat-badge">新型攻击</span>
     <span class='importance'>★★★★☆</span>
   </div>
   <h3><a href="https://www.4hou.com/posts/LGMD" target="_blank" rel="noopener">新型 CrystalRAT 远控木马以 MaaS 模式在 Telegram 推广，新增反分析能力</a></h3>
@@ -298,22 +254,6 @@ body {
 <article class="intel-item curated">
   <div class="curated-top">
     <span class="curated-badge">★ 分析师精选</span>
-    <span class="cat-badge">执法行动</span>
-    <span class='importance'>★★★★☆</span>
-  </div>
-  <h3><a href="https://www.4hou.com/posts/PGXA" target="_blank" rel="noopener">公安机关通报 37 款违规收集个人信息应用，小程序成重灾区</a></h3>
-  <p class="original-title">原文: 公安部通报37款违规应用，电商类占比超七成，小程序不再是法外之地</p>
-  <div class="summary">公安部通报 37 款移动应用存在违法违规收集使用个人信息行为，其中电商类占比超七成，且绝大多数为支付宝和微信小程序。常见违规包括未公开收集使用规则（21款）、超范围收集个人信息等。监管正将小程序纳入与原生 App 同等级别的个人信息保护监管框架，相关企业应立即开展小程序合规自查，避免因违规应用被通报或下架。</div>
-  <div class="meta">
-    <span class="source-badge">🇨🇳 嘶吼 RoarTalk</span>
-    <span class="date">发布于 2026年05月30日</span>
-    <a class="origin-link" href="https://www.4hou.com/posts/PGXA" target="_blank">查看原文 →</a>
-  </div>
-</article>
-<article class="intel-item curated">
-  <div class="curated-top">
-    <span class="curated-badge">★ 分析师精选</span>
-    <span class="cat-badge">新型攻击</span>
     <span class='importance'>★★★★★</span>
   </div>
   <h3><a href="https://www.4hou.com/posts/8gPj" target="_blank" rel="noopener">NoVoice 底层木马感染全球 230 万设备，重置也无法清除</a></h3>
@@ -328,7 +268,6 @@ body {
 <article class="intel-item curated">
   <div class="curated-top">
     <span class="curated-badge">★ 分析师精选</span>
-    <span class="cat-badge">新型攻击</span>
     <span class='importance'>★★★★★</span>
   </div>
   <h3><a href="https://thehackernews.com/2026/05/chatgphish-vulnerability-turns-chatgpt.html" target="_blank" rel="noopener">ChatGPhish 漏洞：ChatGPT 网页摘要功能可被用于钓鱼攻击</a></h3>
@@ -343,7 +282,6 @@ body {
 <article class="intel-item curated">
   <div class="curated-top">
     <span class="curated-badge">★ 分析师精选</span>
-    <span class="cat-badge">新型攻击</span>
     <span class='importance'>★★★★★</span>
   </div>
   <h3><a href="https://thehackernews.com/2026/05/attackers-use-llm-agent-for-post.html" target="_blank" rel="noopener">攻击者利用 LLM Agent 实施后渗透，CVE-2026-39987 漏洞利用链曝光</a></h3>
@@ -354,41 +292,40 @@ body {
     <span class="date">发布于 2026年05月30日</span>
     <a class="origin-link" href="https://thehackernews.com/2026/05/attackers-use-llm-agent-for-post.html" target="_blank">查看原文 →</a>
   </div>
-</article>
-<article class="intel-item curated">
+</article></div>
+</section><section class="cat-section" style="border-top:3px solid #2563eb;">
+  <h2 class="cat-section-title">📜 政策法规 <span class="count">(3 条)</span></h2>
+  <div class="items"><article class="intel-item curated">
   <div class="curated-top">
     <span class="curated-badge">★ 分析师精选</span>
-    <span class="cat-badge">漏洞预警</span>
-    <span class='importance'>★★★★★</span>
-  </div>
-  <h3><a href="https://www.4hou.com/posts/MXOm" target="_blank" rel="noopener">Progress ShareFile 曝新漏洞组合链，可无需认证远程执行代码</a></h3>
-  <p class="original-title">原文: Progress ShareFile曝新漏洞 可组合实现未认证远程代码执行</p>
-  <div class="summary">watchTowr 在 Progress ShareFile 5.x 分支的 Storage Zones Controller 中发现认证绕过（CVE-2026-2699）和 RCE（CVE-2026-2701）两个漏洞，可组合实现未认证远程代码执行。ShareFile 是广泛使用的企业级安全文件传输方案，历史上 Clop 等勒索团伙曾频繁利用同类产品（如 MOVEit、GoAnywhere）的漏洞进行大规模数据窃取。建议使用 ShareFile 的企业立即更新 SZC 组件，并在补丁无法安装时启用网络隔离。</div>
-  <div class="meta">
-    <span class="source-badge">🇨🇳 嘶吼 RoarTalk</span>
-    <span class="date">发布于 2026年05月30日</span>
-    <a class="origin-link" href="https://www.4hou.com/posts/MXOm" target="_blank">查看原文 →</a>
-  </div>
-</article>
-<article class="intel-item curated">
-  <div class="curated-top">
-    <span class="curated-badge">★ 分析师精选</span>
-    <span class="cat-badge">新型攻击</span>
     <span class='importance'>★★★★☆</span>
   </div>
-  <h3><a href="https://www.bleepingcomputer.com/news/security/from-5-attacks-to-botnet-powered-platforms-inside-the-ddos-as-a-service-market/" target="_blank" rel="noopener">DDoS即服务市场兴起：从 5 美元攻击到 Botnet 驱动的平台化运营</a></h3>
-  <p class="original-title">原文: From $5 Attacks to Botnet-Powered Platforms: Inside the DDoS-as-a-Service Market</p>
-  <div class="summary">Flare 报告揭示 DDoS 攻击正以订阅服务模式出售，包含定价层级、客服支持和代理分销体系。DDoS-as-a-Service 市场已从零散工具演变为成熟的攻击平台，入门价格低至 5 美元，配合 Botnet 驱动的放大攻击能力可造成严重业务中断。国内企业应重点强化 DDoS 防御的自动化清洗和容量规划，尤其是在电商促销、关键业务发布等时间节点。</div>
+  <h3><a href="https://www.bleepingcomputer.com/news/security/california-ag-sues-23andme-over-2023-breach-exposing-health-data/" target="_blank" rel="noopener">加州总检察长起诉 23andMe 2023 年数据泄露案</a></h3>
+  <p class="original-title">原文: California AG sues 23andMe over 2023 breach exposing health data</p>
+  <div class="summary">加州总检察长 Rob Bonta 对基因检测公司 23andMe（现 Chrome Holding Co.）提起诉讼，指控其未能保护敏感客户基因和个人信息。2023 年的大规模泄露暴露了数百万用户的遗传数据和家族关系信息。基因数据的敏感性远超普通身份信息——泄露的后果不可逆转（无法更改 DNA）。此案将可能确立基因数据保护的法律先例，生物识别信息领域的从业者应密切关注诉讼进展。</div>
   <div class="meta">
     <span class="source-badge">💻 BleepingComputer</span>
     <span class="date">发布于 2026年05月30日</span>
-    <a class="origin-link" href="https://www.bleepingcomputer.com/news/security/from-5-attacks-to-botnet-powered-platforms-inside-the-ddos-as-a-service-market/" target="_blank">查看原文 →</a>
+    <a class="origin-link" href="https://www.bleepingcomputer.com/news/security/california-ag-sues-23andme-over-2023-breach-exposing-health-data/" target="_blank">查看原文 →</a>
   </div>
 </article>
 <article class="intel-item curated">
   <div class="curated-top">
     <span class="curated-badge">★ 分析师精选</span>
-    <span class="cat-badge">供应链安全</span>
+    <span class='importance'>★★★★☆</span>
+  </div>
+  <h3><a href="https://www.4hou.com/posts/PGXA" target="_blank" rel="noopener">公安机关通报 37 款违规收集个人信息应用，小程序成重灾区</a></h3>
+  <p class="original-title">原文: 公安部通报37款违规应用，电商类占比超七成，小程序不再是法外之地</p>
+  <div class="summary">公安部通报 37 款移动应用存在违法违规收集使用个人信息行为，其中电商类占比超七成，且绝大多数为支付宝和微信小程序。常见违规包括未公开收集使用规则（21款）、超范围收集个人信息等。监管正将小程序纳入与原生 App 同等级别的个人信息保护监管框架，相关企业应立即开展小程序合规自查，避免因违规应用被通报或下架。</div>
+  <div class="meta">
+    <span class="source-badge">🇨🇳 嘶吼 RoarTalk</span>
+    <span class="date">发布于 2026年05月30日</span>
+    <a class="origin-link" href="https://www.4hou.com/posts/PGXA" target="_blank">查看原文 →</a>
+  </div>
+</article>
+<article class="intel-item curated">
+  <div class="curated-top">
+    <span class="curated-badge">★ 分析师精选</span>
     <span class='importance'>★★★★★</span>
   </div>
   <h3><a href="https://www.secrss.com/articles/90772" target="_blank" rel="noopener">超六成 AI 供应商未告知客户，偷偷将甲方数据发给未授权模型</a></h3>
@@ -398,6 +335,50 @@ body {
     <span class="source-badge">🇨🇳 安全内参</span>
     <span class="date">发布于 2026年05月30日</span>
     <a class="origin-link" href="https://www.secrss.com/articles/90772" target="_blank">查看原文 →</a>
+  </div>
+</article></div>
+</section><section class="cat-section" style="border-top:3px solid #7c3aed;">
+  <h2 class="cat-section-title">🔍 解读分析 <span class="count">(3 条)</span></h2>
+  <div class="items"><article class="intel-item curated">
+  <div class="curated-top">
+    <span class="curated-badge">★ 分析师精选</span>
+    <span class='importance'>★★★★★</span>
+  </div>
+  <h3><a href="https://www.bleepingcomputer.com/news/security/google-chrome-adds-session-cookie-theft-protection-for-all-users/" target="_blank" rel="noopener">Google Chrome 向所有用户推出 Device Bound Session Credentials 防会话 Cookie 窃取</a></h3>
+  <p class="original-title">原文: Google Chrome adds session cookie theft protection for all users</p>
+  <div class="summary">Google 宣布 Chrome 的 Device Bound Session Credentials（DBSC）功能现已正式向所有用户推出，用于防御会话 Cookie 窃取攻击。DBSC 将登录凭证绑定到特定设备，即使攻击者通过恶意软件窃取了 Cookie，也无法在其他设备上重用。这一机制能有效防御近年来日益猖獗的信息窃取恶意软件（如 RedLine、Raccoon Stealer 等）发起的会话劫持攻击，建议企业确保用户 Chrome 浏览器更新至最新版本以启用此功能。</div>
+  <div class="meta">
+    <span class="source-badge">💻 BleepingComputer</span>
+    <span class="date">发布于 2026年05月30日</span>
+    <a class="origin-link" href="https://www.bleepingcomputer.com/news/security/google-chrome-adds-session-cookie-theft-protection-for-all-users/" target="_blank">查看原文 →</a>
+  </div>
+</article>
+<article class="intel-item curated">
+  <div class="curated-top">
+    <span class="curated-badge">★ 分析师精选</span>
+    <span class='importance'>★★★★★</span>
+  </div>
+  <h3><a href="https://www.secrss.com/articles/90799" target="_blank" rel="noopener">Anthropic 发布 AI Agent 零信任安全框架，五类风险三层架构应对 Agent 安全挑战</a></h3>
+  <p class="original-title">原文: AI Agent零信任框架：五大风险、三层架构与八阶段实施流程</p>
+  <div class="summary">Anthropic 发布《Zero Trust for AI Agents》白皮书，系统性地提出了面向 AI Agent 部署的安全架构。核心判断是：Agent 不同于聊天机器人——它能调用工具、访问数据、自主执行，传统访问控制无法阻止 Agent 滥用合法权限。框架覆盖 Agent 特有的五大风险（提示注入、权限扩散、记忆投毒等），提出三层零信任架构和八阶段实施流程。所有引入 AI Agent 的企业安全团队都应阅读此白皮书。</div>
+  <div class="meta">
+    <span class="source-badge">🇨🇳 安全内参</span>
+    <span class="date">发布于 2026年05月30日</span>
+    <a class="origin-link" href="https://www.secrss.com/articles/90799" target="_blank">查看原文 →</a>
+  </div>
+</article>
+<article class="intel-item curated">
+  <div class="curated-top">
+    <span class="curated-badge">★ 分析师精选</span>
+    <span class='importance'>★★★★☆</span>
+  </div>
+  <h3><a href="https://www.bleepingcomputer.com/news/security/from-5-attacks-to-botnet-powered-platforms-inside-the-ddos-as-a-service-market/" target="_blank" rel="noopener">DDoS即服务市场兴起：从 5 美元攻击到 Botnet 驱动的平台化运营</a></h3>
+  <p class="original-title">原文: From $5 Attacks to Botnet-Powered Platforms: Inside the DDoS-as-a-Service Market</p>
+  <div class="summary">Flare 报告揭示 DDoS 攻击正以订阅服务模式出售，包含定价层级、客服支持和代理分销体系。DDoS-as-a-Service 市场已从零散工具演变为成熟的攻击平台，入门价格低至 5 美元，配合 Botnet 驱动的放大攻击能力可造成严重业务中断。国内企业应重点强化 DDoS 防御的自动化清洗和容量规划，尤其是在电商促销、关键业务发布等时间节点。</div>
+  <div class="meta">
+    <span class="source-badge">💻 BleepingComputer</span>
+    <span class="date">发布于 2026年05月30日</span>
+    <a class="origin-link" href="https://www.bleepingcomputer.com/news/security/from-5-attacks-to-botnet-powered-platforms-inside-the-ddos-as-a-service-market/" target="_blank">查看原文 →</a>
   </div>
 </article></div>
 </section>
