@@ -80,27 +80,40 @@ def fetch_rss(url, name, is_cn=False):
 
 def fetch_secrss():
     items = []
-    try:
-        resp = session.get("https://www.secrss.com/api/articles?page=1&per-page=20", timeout=15)
-        resp.raise_for_status()
-        data = resp.json()
-        if data.get("code") != "10000":
-            return items
-        for art in data.get("data", []):
-            title = (art.get("title") or "").strip()
-            if not title:
+    for page in [1, 2, 3]:
+        try:
+            resp = session.get(f"https://www.secrss.com/api/articles?page={page}&per-page=20", timeout=15)
+            resp.raise_for_status()
+            data = resp.json()
+            if data.get("code") != "10000":
                 continue
-            pub = art.get("published_at", "")
-            items.append({
-                "title": title,
-                "url": f"https://www.secrss.com/articles/{art['id']}",
-                "summary": (art.get("summary") or "")[:500],
-                "source": "安全内参",
-                "published": pub,
-                "is_cn": True,
-            })
-    except Exception as e:
-        print(f"  [X] 安全内参: {e}")
+            for art in data.get("data", []):
+                title = (art.get("title") or "").strip()
+                if not title:
+                    continue
+                pub = art.get("published_at", "")
+                items.append({
+                    "title": title,
+                    "url": f"https://www.secrss.com/articles/{art['id']}",
+                    "summary": (art.get("summary") or "")[:500],
+                    "source": "安全内参",
+                    "published": pub,
+                    "is_cn": True,
+                })
+        except Exception as e:
+            print(f"  [X] 安全内参 page {page}: {e}")
+
+    for item in items[:20]:
+        try:
+            resp = session.get(item["url"], timeout=15)
+            soup = BeautifulSoup(resp.text, "html.parser")
+            body = soup.select_one(".article-body")
+            if body:
+                text = body.get_text(strip=True)
+                if len(text) > len(item["summary"]):
+                    item["summary"] = text[:1000]
+        except:
+            pass
     return items
 
 def fetch_nvd():
@@ -180,7 +193,7 @@ def main():
     seen = set()
     unique = []
     for it in all_items:
-        key = hashlib.md5((it["title"] + it["source"]).encode()).hexdigest()
+        key = hashlib.md5((it["title"] + it["source"]).encode("utf-8")).hexdigest()
         if key not in seen:
             seen.add(key)
             unique.append(it)
