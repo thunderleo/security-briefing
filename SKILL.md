@@ -1,0 +1,123 @@
+---
+name: security-briefing
+description: 全自动每日网络安全简报生成。用户说"做安全简报"或类似指令时触发，由我自主完成数据抓取、情报分析、页面生成全部环节，用户只需最后打开页面查看。绝不要求用户先运行任何脚本。触发词：安全简报、情报分析、security briefing、今天的安全、今日情报。
+---
+
+# 全自动每日网络安全简报
+
+SKILL_DIR 为此文档所在目录。所有脚本和数据文件均在此目录中，脚本通过 `os.path.dirname(__file__)` 自动定位自身。
+
+## 前提条件
+
+- Python 3.7+
+- （可选）Kimi WebBridge — 用于浏览器补抓
+
+## 平台约定
+
+| 操作 | Windows | Mac / Linux |
+|------|---------|-------------|
+| Python 命令 | `python` | `python3` |
+| pip 命令 | `python -m pip` | `python3 -m pip` |
+
+## 工作流程
+
+### 第零步：自动安装依赖
+
+执行以下 Python 代码检查并安装缺失依赖：
+
+```python
+import subprocess, sys, importlib, os, re
+req_path = os.path.join(os.path.dirname(__file__), "requirements.txt")
+missing = []
+with open(req_path) as f:
+    for line in f:
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        pkg = re.split(r"[><=~!]", line)[0]
+        try:
+            importlib.import_module(pkg)
+        except ImportError:
+            missing.append(line)
+if missing:
+    pip = sys.executable + " -m pip"
+    for pkg in missing:
+        subprocess.check_call(f"{pip} install {pkg}".split())
+```
+
+已安装则秒过，不阻塞流程。
+
+### 第一步：数据抓取
+
+1. **运行脚本** — 按平台约定执行 `python[3] SKILL_DIR/fetch_data.py`
+2. **检查缺失源** — 查看 `raw_data.json` 中以下来源是否缺失：BleepingComputer、嘶吼、NVD、Krebs on Security
+3. **浏览器补抓** — 先检查 Kimi WebBridge 是否正常运行（`kimi-webbridge status`）。若正常，对缺失源用浏览器访问 RSS feed 获取内容；若不可用，跳过此步骤，缺失源不纳入本期简报
+4. **合并数据** — 浏览器抓取结果格式化为一致结构，追加写入 `raw_data.json`
+
+### 第二步：编写分析
+
+读取 `raw_data.json`，按下方规范写入 `analysis.json`。
+
+### 第三步：生成页面
+
+1. 按平台约定执行 `python[3] SKILL_DIR/build_page.py`
+2. 若失败，按附录手动生成 HTML
+3. 告知用户页面路径：`SKILL_DIR/index.html`
+
+## 分析编写规范
+
+### 格式
+
+```json
+{
+  "id": 序号,
+  "title": "中文标题（自拟，含关键信息）",
+  "original_title": "原始英文标题",
+  "url": "原文链接",
+  "source": "来源名称",
+  "importance": "★★★★★",
+  "category": "分类",
+  "analysis": "完整分析段落（200~400 字）"
+}
+```
+
+### 字段规则
+
+- **title**: 自拟中文标题，包含 CVE 编号/组织名/产品名
+- **original_title**: 英文源保留原文
+- **source**: 从 raw 中直接取
+- **importance**: ★★★★★ 或 ★★★★☆
+- **category**: `漏洞预警` `新型攻击` `APT 分析` `威胁情报` `安全技术` `数据泄露` `执法行动` `供应链安全` `攻防技术` `安全趋势`
+
+### analysis 段落要求
+
+每条 200~400 汉字，包括：
+1. **事件概要** — 发生了什么（1-2 句）
+2. **影响分析** — 谁受影响、严重程度
+3. **行动建议** — 防御方可操作步骤
+4. **全局视角** — 关联同类事件或行业趋势
+
+风格：专业但可读，适合安全从业者晨读。CVSS 以 `CVSS X.X` 格式标注。
+
+### 精选原则
+
+- 优先：在野利用、CVSS ≥ 9、国内生态相关、新型攻击手法
+- 覆盖：不同来源和分类的分布平衡
+- 同一事件多源报道时合并为一条
+- 涉及国内产品（亿赛通、致远、用友等）高度重视
+
+## 验证
+
+- JSON 格式合法
+- 每条 analysis 200~400 汉字
+- importance 只出现 ★★★★★ 和 ★★★★☆
+- category 在指定集合中
+- index.html 已生成且非空
+
+## 附录：手动生成 HTML
+
+若 `build_page.py` 不可用，手动生成：
+1. 读取 `analysis.json` 的 `picks` 数组
+2. 读取 `raw_data.json` 获取来源统计
+3. 生成单页 HTML，结构：深色渐变头部、精选情报卡片区、来源统计脚注
+4. 写入 `index.html`
