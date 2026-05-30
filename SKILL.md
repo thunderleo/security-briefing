@@ -35,6 +35,7 @@ python[3] -m pip install -r "SKILL_DIR/requirements.txt" -q
 2. **检查缺失源** — 查看 `raw_data.json` 中以下来源是否缺失：BleepingComputer、嘶吼、NVD、Krebs on Security
 3. **浏览器补抓** — 先检查 Kimi WebBridge 是否正常运行（`kimi-webbridge status`）。若正常，对缺失源用浏览器访问 RSS feed 获取内容；若不可用，跳过此步骤，缺失源不纳入本期简报
 4. **合并数据** — 浏览器抓取结果格式化为一致结构，追加写入 `raw_data.json`
+5. **网信办政策补抓** — 执行 `python[3] SKILL_DIR/fetch_cac.py`，从国家网信办官网抓取最新政策法规条目并合并到 `raw_data.json`
 
 ### 第二步：编写分析
 
