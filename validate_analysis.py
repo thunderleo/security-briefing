@@ -29,24 +29,28 @@ for pick in picks:
         errors.append(f"  [#{pid}] URL 为空: {title}")
         continue
 
-    if url not in raw_urls:
-        # 尝试模糊匹配：检查 URL 是否在任意 raw 条目的 summary 或 title 中出现
+    pick_domain = url.split("/")[2]
+    # 检查域名是否匹配 source 对应的真实数据
+    source_domains = set(ri["url"].split("/")[2] for ri in raw_items if ri["source"] == source)
+    if source_domains and pick_domain not in source_domains:
+        errors.append(
+            f"  [#{pid}] URL 域名 '{pick_domain}' 与来源 '{source}' 不匹配\n"
+            f"         期望域名: {', '.join(sorted(source_domains))}\n"
+            f"         URL: {url}\n"
+            f"         标题: {title[:60]}"
+        )
+    elif url not in raw_urls:
+        # URL 不在精确列表，但域名匹配，做模糊检查
         matched = False
         for ri in raw_items:
             if url in ri.get("summary", "") or url in ri.get("title", ""):
                 matched = True
                 break
         if not matched:
-            # 检查域名是否匹配 source
-            domain_ok = any(
-                ri["source"] == source and ri["url"].split("/")[2] == url.split("/")[2]
-                for ri in raw_items
+            errors.append(
+                f"  [#{pid}] URL 在 raw_data.json 中不存在: {url}\n"
+                f"         标题: {title[:60]}"
             )
-            if not domain_ok:
-                errors.append(
-                    f"  [#{pid}] URL 在 raw_data.json 中不存在: {url}\n"
-                    f"         标题: {title[:60]}"
-                )
 
 # analysis 检查
 for pick in picks:
