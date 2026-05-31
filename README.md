@@ -1,13 +1,12 @@
 # 每日网络安全简报
 
-全自动生成每日网络安全情报简报，通过 GitHub Pages 发布。
+全自动生成每日网络安全情报简报，输出为单页 HTML。
 
 ## 工作流程
 
 1. **抓取数据** — `fetch_data.py` 从 RSS 源和 API 抓取原始情报
 2. **编写分析** — 根据 `raw_data.json` 手动编写 `analysis.json` 精选条目
 3. **生成页面** — `build_page.py` 自动验证数据并生成 `index.html`
-4. **发布** — 推送至 GitHub Pages
 
 ## 文件结构
 
@@ -34,7 +33,7 @@
 - NVD 漏洞库
 - 中国网信网
 
-## 部署
+## 使用
 
 ```bash
 pip install feedparser requests beautifulsoup4
@@ -42,7 +41,6 @@ pip install feedparser requests beautifulsoup4
 python fetch_data.py
 # 手动编写 analysis.json
 python build_page.py
-
-git add index.html && git commit -m "daily briefing"
-git push
 ```
+
+输出文件：`index.html`
