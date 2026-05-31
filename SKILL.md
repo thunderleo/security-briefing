@@ -40,6 +40,20 @@ python[3] -m pip install -r "SKILL_DIR/requirements.txt" -q
 
 读取 `raw_data.json`（可用 `python SKILL_DIR/list_items.py` 列出所有条目），按下方规范写入 `analysis.json`。
 
+**⚠️ URL 必须从 raw_data.json 中提取真实链接**，不可凭标题推测生成。查询真实 URL 的方式：
+- `python SKILL_DIR/list_items.py --show-url` — 显示全部条目的完整 URL
+- `python SKILL_DIR/list_items.py --search 关键词 --show-url` — 搜索特定条目的 URL
+
+### 2.5 验证分析数据
+
+```bash
+python[3] SKILL_DIR/validate_analysis.py
+```
+
+- 确保每条精选的 `url` 均在 `raw_data.json` 中有对应条目
+- 检查 `analysis` 长度、`importance`、`category` 等字段合法性
+- **若验证失败，需修正 `analysis.json` 重新验证**，通过后方可进入下一步
+
 ### 第三步：生成页面
 
 1. 按平台约定执行 `python[3] SKILL_DIR/build_page.py`
@@ -93,11 +107,14 @@ python[3] -m pip install -r "SKILL_DIR/requirements.txt" -q
 
 ## 验证
 
-- JSON 格式合法
-- 每条 analysis 200~400 汉字
-- importance 只出现 ★★★★★ 和 ★★★★☆
-- category 在指定集合中
+- JSON 格式合法（自动检查）
+- 每条 `url` 在 raw_data.json 中有对应条目（自动检查）
+- 每条 analysis 200~400 汉字（自动检查）
+- importance 只出现 ★★★★★ 和 ★★★★☆（自动检查）
+- category 在指定集合中（自动检查）
 - index.html 已生成且非空
+
+上述检查由 `validate_analysis.py` 自动完成，请务必在生成页面前运行。
 
 ## 附录：手动生成 HTML
 
