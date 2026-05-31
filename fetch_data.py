@@ -31,7 +31,7 @@ RSS_FEEDS = {
 NVD_API_URL = "https://services.nvd.nist.gov/rest/json/cves/2.0"
 
 MAX_PER_SOURCE = 8
-HOURS_BACK = 72
+HOURS_BACK = 168
 
 def clean_html(text):
     if not text:
@@ -58,7 +58,7 @@ def fetch_rss(url, name, is_cn=False):
                 pub = datetime(*entry.updated_parsed[:6], tzinfo=timezone.utc)
             elif hasattr(entry, "published_parsed") and entry.published_parsed:
                 pub = datetime(*entry.published_parsed[:6], tzinfo=timezone.utc)
-            if pub and pub < cutoff and not is_cn:
+            if pub and pub < cutoff:
                 continue
             summary = ""
             if hasattr(entry, "summary") and entry.summary:
