@@ -211,6 +211,10 @@ def build_html():
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>每日网络安全简报 - {date_cn}</title>
+<meta property="og:title" content="每日网络安全简报 - {html.escape(date_cn)}">
+<meta property="og:description" content="AI 分析师从 {total} 条情报中精选 {len(curated_items)} 条安全要闻，涵盖政策法规、安全事件、漏洞风险等">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
 <style>
 *, *::before, *::after {{ margin:0; padding:0; box-sizing:border-box; }}
 body {{

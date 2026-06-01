@@ -10,12 +10,18 @@ import hashlib
 from datetime import datetime, timezone, timedelta
 from bs4 import BeautifulSoup
 import urllib.parse
+from requests.adapters import HTTPAdapter
+from urllib3.util import Retry
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 RAW_FILE = os.path.join(BASE_DIR, "raw_data.json")
 
 session = requests.Session()
 session.headers.update({"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"})
+_retry = Retry(total=3, backoff_factor=0.5, status_forcelist=[500, 502, 503, 504], allowed_methods=["GET"])
+_adapter = HTTPAdapter(max_retries=_retry)
+session.mount("http://", _adapter)
+session.mount("https://", _adapter)
 
 RSS_FEEDS = {
     "The Hacker News": "https://feeds.feedburner.com/TheHackersNews",
