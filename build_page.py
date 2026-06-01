@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """根据原始数据和分析结果生成 HTML 简报页面"""
 
-import json, os, sys, re, html
+import json, os, sys, re, html, shutil
 from datetime import datetime
 from string import Template
 
@@ -228,6 +228,56 @@ def build_html():
     )
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         f.write(page_html)
+
+    date_label = datetime.now().strftime("%Y-%m-%d")
+
+    if analysis and os.path.exists(ANALYSIS_FILE):
+        analysis_dir = os.path.join(BASE_DIR, "analysis")
+        os.makedirs(analysis_dir, exist_ok=True)
+        analysis_path = os.path.join(analysis_dir, f"{date_label}.json")
+        if not os.path.exists(analysis_path):
+            shutil.copy2(ANALYSIS_FILE, analysis_path)
+
+    html_dir = os.path.join(BASE_DIR, "archive")
+    os.makedirs(html_dir, exist_ok=True)
+    html_path = os.path.join(html_dir, f"{date_label}.html")
+    with open(html_path, "w", encoding="utf-8") as f:
+        f.write(page_html)
+
+    dates = sorted(set(
+        f.removesuffix(".html") for f in os.listdir(html_dir)
+        if f.endswith(".html") and f != "index.html"
+    ), reverse=True)
+    links = "\n".join(
+        f'    <li><a href="{d}.html">{d}</a></li>' for d in dates
+    )
+    archive_html = f"""<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>每日网络安全简报 - 历史归档</title>
+<style>
+body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif; background: #f0f2f5; color: #1a1a2e; line-height: 1.6; max-width: 600px; margin: 0 auto; padding: 40px 20px; }}
+h1 {{ font-size: 1.5em; margin-bottom: 8px; }}
+p {{ color: #666; margin-bottom: 24px; }}
+ul {{ list-style: none; padding: 0; }}
+li {{ padding: 8px 0; }}
+a {{ color: #4361ee; text-decoration: none; }}
+a:hover {{ text-decoration: underline; }}
+</style>
+</head>
+<body>
+<h1>📅 历史归档</h1>
+<p>共 {len(dates)} 期简报</p>
+<ul>
+{links}
+</ul>
+</body>
+</html>"""
+    with open(os.path.join(html_dir, "index.html"), "w", encoding="utf-8") as f:
+        f.write(archive_html)
+
     print(f"  [OK] 已生成: {OUTPUT_FILE} ({len(page_html):,} 字节)")
 
 if __name__ == "__main__":

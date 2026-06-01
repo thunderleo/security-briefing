@@ -7,6 +7,7 @@ import json
 import re
 import os
 import hashlib
+import shutil
 from datetime import datetime, timezone, timedelta
 from bs4 import BeautifulSoup
 import urllib.parse
@@ -360,6 +361,13 @@ def main():
         "total": len(unique),
         "items": unique,
     }
+
+    if os.path.exists(RAW_FILE):
+        archive_dir = os.path.join(BASE_DIR, "raw_data")
+        os.makedirs(archive_dir, exist_ok=True)
+        archive_path = os.path.join(archive_dir, f"{datetime.now().strftime('%Y-%m-%d')}.json")
+        if not os.path.exists(archive_path):
+            shutil.copy2(RAW_FILE, archive_path)
 
     with open(RAW_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
