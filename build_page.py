@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """根据原始数据和分析结果生成 HTML 简报页面"""
 
-import json, os, sys, re
+import json, os, sys, re, html
 from datetime import datetime
 
 def hex_to_rgba(hex_color, alpha=0.1):
@@ -136,16 +136,19 @@ def build_html():
             color = "#dc2626" if it["score"] >= 9 else "#ea580c"
             score_badge = f'<span class="score" style="background:{color}">CVSS {it["score"]}</span>'
 
-        title = it.get("title_cn") or it["title"]
-        summary = it.get("summary_cn") or it.get("summary", "")
+        title = html.escape(it.get("title_cn") or it["title"])
+        summary = html.escape(it.get("summary_cn") or it.get("summary", ""))
 
         if is_curated:
             imp = it.get("importance", "")
-            orig = it.get("original_title", "")
+            orig = html.escape(it.get("original_title", ""))
             section_cat = it.get("category", "")
             cat_cfg = CATEGORY_CONFIG.get(section_cat, {"color": "#666"})
             orig_cat = it.get("original_category", "")
-            badge_label = orig_cat or section_cat
+            badge_label = html.escape(orig_cat or section_cat)
+            safe_url = html.escape(it["url"])
+            safe_source = html.escape(it["source"])
+            safe_pub = html.escape(it.get("published") or date_cn)
             cat_badge = f'<span class="cat-badge" style="background:{hex_to_rgba(cat_cfg["color"])};color:{cat_cfg["color"]}">{badge_label}</span>'
             return f'''<article class="intel-item curated">
   <div class="curated-top">
@@ -153,23 +156,26 @@ def build_html():
     {cat_badge}
     {"<span class='importance'>" + imp + "</span>" if imp else ""}
   </div>
-  <h3><a href="{it["url"]}" target="_blank" rel="noopener">{title}</a>{score_badge}</h3>
+  <h3><a href="{safe_url}" target="_blank" rel="noopener">{title}</a>{score_badge}</h3>
   {f'<p class="original-title">原文: {orig}</p>' if orig and orig != title else ''}
   <div class="summary">{summary}</div>
   <div class="meta">
-    <span class="source-badge">{icon} {it["source"]}</span>
-    <span class="date">发布于 {it.get("published") or date_cn}</span>
-    <a class="origin-link" href="{it["url"]}" target="_blank" rel="noopener">查看原文 →</a>
+    <span class="source-badge">{icon} {safe_source}</span>
+    <span class="date">发布于 {safe_pub}</span>
+    <a class="origin-link" href="{safe_url}" target="_blank" rel="noopener">查看原文 →</a>
   </div>
 </article>'''
 
+        safe_url = html.escape(it["url"])
+        safe_source = html.escape(it["source"])
+        safe_pub = html.escape(it.get("published") or date_cn)
         return f'''<article class="intel-item">
-  <h3><a href="{it["url"]}" target="_blank" rel="noopener">{title}</a>{score_badge}</h3>
+  <h3><a href="{safe_url}" target="_blank" rel="noopener">{title}</a>{score_badge}</h3>
   <p class="summary">{summary[:200]}{"..." if len(summary) > 200 else ""}</p>
   <div class="meta">
-    <span class="source-badge">{icon} {it["source"]}</span>
-    <span class="date">{it.get("published") or date_cn}</span>
-    <a class="origin-link" href="{it["url"]}" target="_blank" rel="noopener">查看原文 →</a>
+    <span class="source-badge">{icon} {safe_source}</span>
+    <span class="date">{safe_pub}</span>
+    <a class="origin-link" href="{safe_url}" target="_blank" rel="noopener">查看原文 →</a>
   </div>
 </article>'''
 
@@ -199,7 +205,7 @@ def build_html():
         cur_html = f'''<p class="curated-intro">以下为 AI 分析师从 {total} 条原始情报中筛选的重要信息，按分类展示</p>
 {"".join(sections)}'''
 
-    html = f'''<!DOCTYPE html>
+    page_html = f'''<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -304,8 +310,8 @@ body {{
 </body>
 </html>'''
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-        f.write(html)
-    print(f"  [OK] 已生成: {OUTPUT_FILE} ({len(html):,} 字节)")
+        f.write(page_html)
+    print(f"  [OK] 已生成: {OUTPUT_FILE} ({len(page_html):,} 字节)")
 
 if __name__ == "__main__":
     build_html()

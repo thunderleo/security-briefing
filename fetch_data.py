@@ -107,6 +107,7 @@ def fetch_secrss():
     for item in items[:20]:
         try:
             resp = session.get(item["url"], timeout=15)
+            resp.encoding = "utf-8"
             soup = BeautifulSoup(resp.text, "html.parser")
             body = soup.select_one(".article-body")
             if body:
@@ -115,8 +116,8 @@ def fetch_secrss():
                     item["summary"] = text[:1000]
                 if "本文来自网信中国" in text:
                     item["_original_source"] = "网信中国"
-        except:
-            pass
+        except Exception as e:
+            print(f"    [!] 内容抓取失败: {item.get('url', '')} - {e}")
     return items
 
 def fetch_nvd():
@@ -142,10 +143,13 @@ def fetch_nvd():
                     break
             metrics = cve.get("metrics", {})
             cvss = 0.0
-            for ver in ["cvssMetricV31", "cvssMetricV30", "cvssMetricV2"]:
-                if ver in metrics:
-                    cvss = metrics[ver][0]["cvssData"].get("baseScore", 0)
-                    break
+            cvss_entry = (
+                metrics.get("cvssMetricV31")
+                or metrics.get("cvssMetricV30")
+                or metrics.get("cvssMetricV2")
+                or [{}]
+            )[0].get("cvssData", {})
+            cvss = cvss_entry.get("baseScore", 0)
             items.append({
                 "title": cve.get("id", ""),
                 "url": f"https://nvd.nist.gov/vuln/detail/{cve.get('id','')}",
@@ -197,7 +201,7 @@ def fetch_moanju():
     try:
         resp = session.get("https://moanju.org/posts", timeout=15)
         resp.raise_for_status()
-        soup = BeautifulSoup(resp.text, "html.parser")
+        soup = BeautifulSoup(resp.content, "html.parser", from_encoding="utf-8")
         for card in soup.select("article.card"):
             title_el = card.select_one("h3 a")
             if not title_el:
@@ -269,11 +273,7 @@ def fetch_cac():
             "published": published,
             "is_cn": True,
         })
-    seen2 = {}
-    for it in items:
-        if it["url"] not in seen2:
-            seen2[it["url"]] = it
-    return list(seen2.values())
+    return items
 
 def main():
     print("=" * 50)
@@ -283,19 +283,10 @@ def main():
 
     all_items = []
 
-    print("\n  英文源...")
+    print("\n  RSS 源...")
+    cn_sources = {"嘶吼 RoarTalk", "先知社区"}
     for name, url in RSS_FEEDS.items():
-        if name in ["嘶吼 RoarTalk", "先知社区"]:
-            continue
-        items = fetch_rss(url, name)
-        print(f"    {name}: {len(items)}")
-        all_items.extend(items)
-
-    print("\n  中文源...")
-    for name, url in RSS_FEEDS.items():
-        if name not in ["嘶吼 RoarTalk", "先知社区"]:
-            continue
-        items = fetch_rss(url, name, is_cn=True)
+        items = fetch_rss(url, name, is_cn=(name in cn_sources))
         print(f"    {name}: {len(items)}")
         all_items.extend(items)
 
