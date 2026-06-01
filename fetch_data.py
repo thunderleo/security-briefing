@@ -113,6 +113,8 @@ def fetch_secrss():
                 text = body.get_text(strip=True)
                 if len(text) > len(item["summary"]):
                     item["summary"] = text[:1000]
+                if "本文来自网信中国" in text:
+                    item["_original_source"] = "网信中国"
         except:
             pass
     return items
@@ -189,6 +191,41 @@ def is_valid_cac_item(text, href):
     if "javascript:" in href:
         return False
     return True
+
+def fetch_moanju():
+    items = []
+    try:
+        resp = session.get("https://moanju.org/posts", timeout=15)
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.text, "html.parser")
+        for card in soup.select("article.card"):
+            title_el = card.select_one("h3 a")
+            if not title_el:
+                continue
+            title = title_el.get_text(strip=True)
+            href = title_el.get("href", "")
+            if not href:
+                continue
+            url = urllib.parse.urljoin("https://moanju.org", href)
+            desc_el = card.select_one("p.text-mute")
+            summary = desc_el.get_text(strip=True) if desc_el else ""
+            pub = ""
+            for span in card.select("span"):
+                t = span.get_text(strip=True)
+                if re.match(r"\d{4}/\d{2}/\d{2}", t):
+                    pub = t.replace("/", "-")
+                    break
+            items.append({
+                "title": title,
+                "url": url,
+                "summary": summary[:500],
+                "source": "模安局",
+                "published": pub,
+                "is_cn": True,
+            })
+    except Exception as e:
+        print(f"  [X] 模安局: {e}")
+    return items
 
 def fetch_cac():
     items = []
@@ -272,14 +309,53 @@ def main():
     print(f"    NVD: {len(nvd)}")
     all_items.extend(nvd)
 
+    print("\n  模安局...")
+    moanju = fetch_moanju()
+    print(f"    模安局: {len(moanju)}")
+    all_items.extend(moanju)
+
     print("\n  中国网信网...")
     cac = fetch_cac()
     print(f"    中国网信网: {len(cac)}")
     all_items.extend(cac)
 
+    # 溯源: 安全内参转载自网信中国 → 改用中国网信网原文链接
+    cac_lookup = {}
+    for it in all_items:
+        if it["source"] == CAC_SOURCE:
+            norm = re.sub(r'[^\w\u4e00-\u9fff]', '', it["title"])
+            cac_lookup[norm] = it
+
+    migrated = 0
+    migrated_secrss_urls = set()
+    to_remove = set()
+    for it in all_items:
+        if it.get("_original_source") == "网信中国":
+            norm = re.sub(r'[^\w\u4e00-\u9fff]', '', it["title"])
+            orig_url = it["url"]
+            for c_norm, cac_it in cac_lookup.items():
+                if norm in c_norm or c_norm in norm:
+                    it["url"] = cac_it["url"]
+                    it["source"] = CAC_SOURCE
+                    it["summary"] = cac_it["summary"]
+                    it["title"] = cac_it["title"]
+                    migrated_secrss_urls.add(orig_url)
+                    to_remove.add(id(cac_it))
+                    migrated += 1
+                    break
+
+    if migrated:
+        print(f"\n  溯源替换: {migrated} 条安全内参条目替换为中国网信网原文")
+        all_items = [
+            it for it in all_items
+            if id(it) not in to_remove
+            and not (it["source"] == "安全内参" and it["url"] in migrated_secrss_urls)
+        ]
+
     seen = set()
     unique = []
     for it in all_items:
+        it.pop("_original_source", None)
         key = hashlib.md5((it["title"] + it["source"]).encode("utf-8")).hexdigest()
         if key not in seen:
             seen.add(key)

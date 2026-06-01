@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
 """根据原始数据和分析结果生成 HTML 简报页面"""
 
-import json, os, sys
+import json, os, sys, re
 from datetime import datetime
+
+def hex_to_rgba(hex_color, alpha=0.1):
+    h = hex_color.lstrip("#")
+    r, g, b = int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
+    return f"rgba({r},{g},{b},{alpha})"
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 RAW_FILE = os.path.join(BASE_DIR, "raw_data.json")
@@ -141,7 +146,7 @@ def build_html():
             cat_cfg = CATEGORY_CONFIG.get(section_cat, {"color": "#666"})
             orig_cat = it.get("original_category", "")
             badge_label = orig_cat or section_cat
-            cat_badge = f'<span class="cat-badge" style="background:{cat_cfg["color"]}18;color:{cat_cfg["color"]}">{badge_label}</span>'
+            cat_badge = f'<span class="cat-badge" style="background:{hex_to_rgba(cat_cfg["color"])};color:{cat_cfg["color"]}">{badge_label}</span>'
             return f'''<article class="intel-item curated">
   <div class="curated-top">
     <span class="curated-badge">★ 分析师精选</span>
@@ -154,7 +159,7 @@ def build_html():
   <div class="meta">
     <span class="source-badge">{icon} {it["source"]}</span>
     <span class="date">发布于 {it.get("published") or date_cn}</span>
-    <a class="origin-link" href="{it["url"]}" target="_blank">查看原文 →</a>
+    <a class="origin-link" href="{it["url"]}" target="_blank" rel="noopener">查看原文 →</a>
   </div>
 </article>'''
 
@@ -164,7 +169,7 @@ def build_html():
   <div class="meta">
     <span class="source-badge">{icon} {it["source"]}</span>
     <span class="date">{it.get("published") or date_cn}</span>
-    <a class="origin-link" href="{it["url"]}" target="_blank">查看原文 →</a>
+    <a class="origin-link" href="{it["url"]}" target="_blank" rel="noopener">查看原文 →</a>
   </div>
 </article>'''
 
