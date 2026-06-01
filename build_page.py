@@ -3,6 +3,7 @@
 
 import json, os, sys, re, html
 from datetime import datetime
+from string import Template
 
 def hex_to_rgba(hex_color, alpha=0.1):
     h = hex_color.lstrip("#")
@@ -205,114 +206,26 @@ def build_html():
         cur_html = f'''<p class="curated-intro">以下为 AI 分析师从 {total} 条原始情报中筛选的重要信息，按分类展示</p>
 {"".join(sections)}'''
 
-    page_html = f'''<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>每日网络安全简报 - {date_cn}</title>
-<meta property="og:title" content="每日网络安全简报 - {html.escape(date_cn)}">
-<meta property="og:description" content="AI 分析师从 {total} 条情报中精选 {len(curated_items)} 条安全要闻，涵盖政策法规、安全事件、漏洞风险等">
-<meta property="og:type" content="website">
-<meta name="twitter:card" content="summary_large_image">
-<style>
-*, *::before, *::after {{ margin:0; padding:0; box-sizing:border-box; }}
-body {{
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", "PingFang SC", sans-serif;
-  background: #f0f2f5; color: #1a1a2e; line-height: 1.6;
-}}
-.header {{
-  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-  color: #fff; padding: 40px 20px; text-align: center; position: relative; overflow: hidden;
-}}
-.header::before {{
-  content: ''; position: absolute; top:0;left:0;right:0;bottom:0;
-  background: radial-gradient(circle at 20% 50%, rgba(0,180,216,0.15) 0%, transparent 50%),
-              radial-gradient(circle at 80% 50%, rgba(114,9,183,0.1) 0%, transparent 50%);
-}}
-.header h1 {{ font-size:2.6em; font-weight:700; position:relative; letter-spacing:2px; }}
-.header .subtitle {{ font-size:0.95em; color:rgba(255,255,255,0.7); margin-top:8px; position:relative; }}
-.stats-bar {{ display:flex; justify-content:center; gap:40px; margin-top:20px; position:relative; }}
-.stat {{ text-align:center; }}
-.stat-value {{ font-size:1.8em; font-weight:700; color:#48bfe3; }}
-.stat-label {{ font-size:0.8em; color:rgba(255,255,255,0.6); }}
-.container {{ max-width:900px; margin:0 auto; padding:24px 16px; }}
-.last-update {{ text-align:right; font-size:0.85em; color:#888; margin-bottom:20px; }}
+    og_desc = f"AI 分析师从 {total} 条情报中精选 {len(curated_items)} 条安全要闻，涵盖政策法规、安全事件、漏洞风险等"
+    curated_stat_html = (f'<div class="stat"><div class="stat-value">{len(curated_items)}</div><div class="stat-label">精选推荐</div></div>'
+                         if curated_items else '')
 
-.curated-intro {{ font-size:0.85em; color:#666; margin-bottom:20px; padding-left:4px; }}
-.cat-section {{ margin-bottom:28px; padding-top:12px; }}
-.cat-section-title {{
-  font-size:1.15em; font-weight:600; color:#1a1a2e;
-  margin-bottom:14px; display:flex; align-items:center; gap:8px;
-}}
-.cat-section-title .count {{ font-size:0.8em; color:#888; font-weight:400; }}
+    tmpl_path = os.path.join(BASE_DIR, "template.html")
+    with open(tmpl_path, encoding="utf-8") as f:
+        tmpl = Template(f.read())
 
-.intel-item.curated {{
-  border-left: 4px solid #f59e0b;
-  background: linear-gradient(135deg, #fffbeb 0%, #fff 100%);
-}}
-.curated-badge {{
-  display: inline-block; background:#f59e0b; color:#fff;
-  font-size:0.72em; font-weight:600; padding:2px 10px; border-radius:4px;
-  margin-bottom:8px;
-}}
-.intel-item.curated .summary {{ font-size:0.92em; color:#333; line-height:1.7; }}
-.original-title {{ font-size:0.78em; color:#999; margin-bottom:6px; }}
-.curated-top {{ display:flex; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap; }}
-.importance {{ font-size:0.8em; color:#f59e0b; letter-spacing:1px; }}
-.cat-badge {{ display:inline-block; font-size:0.72em; font-weight:600; padding:2px 10px; border-radius:4px; margin-bottom:6px; }}
-.intel-item {{
-  background:#fff; border-radius:8px; padding:18px 20px; margin-bottom:14px;
-  box-shadow:0 1px 3px rgba(0,0,0,0.06); transition:all 0.2s;
-}}
-.intel-item:hover {{ box-shadow:0 4px 12px rgba(0,0,0,0.1); transform:translateY(-1px); }}
-.intel-item h3 {{
-  font-size:1em; font-weight:600; margin-bottom:6px;
-  display:flex; align-items:flex-start; gap:8px;
-}}
-.intel-item h3 a {{ color:#000000; text-decoration:none; flex:1; }}
-.intel-item h3 a:hover {{ color:#4361ee; text-decoration:underline; }}
-.score {{
-  font-size:0.7em; color:#fff; padding:2px 8px; border-radius:4px;
-  white-space:nowrap; flex-shrink:0; margin-top:1px;
-}}
-.summary {{ font-size:0.88em; color:#555; line-height:1.55; margin-bottom:8px; }}
-.meta {{ display:flex; align-items:center; gap:12px; font-size:0.78em; flex-wrap:wrap; }}
-.source-badge {{ background:#eef2ff; color:#4361ee; padding:2px 10px; border-radius:12px; font-weight:500; }}
-.date {{ color:#999; }}
-.origin-link {{ color:#4361ee; text-decoration:none; margin-left:auto; }}
-.origin-link:hover {{ text-decoration:underline; }}
-.footer {{ text-align:center; padding:30px 20px; color:#999; font-size:0.85em; }}
-@media (max-width:600px) {{
-  .header h1 {{ font-size:1.9em; }}
-  .stats-bar {{ gap:20px; }}
-  .stat-value {{ font-size:1.4em; }}
-  .intel-item {{ padding:14px 16px; }}
-  .intel-item h3 {{ font-size:0.95em; }}
-}}
-</style>
-</head>
-<body>
-<div class="header">
-  <h1>🛡️ 每日网络安全简报</h1>
-  <p class="subtitle">{date_cn} 星期{weekday} · AI 分析师精选</p>
-  <div class="stats-bar">
-    <div class="stat"><div class="stat-value">{total}</div><div class="stat-label">情报条目</div></div>
-    <div class="stat"><div class="stat-value">{len(set(it['source'] for it in all_items))}</div><div class="stat-label">数据来源</div></div>
-    {f'<div class="stat"><div class="stat-value">{len(curated_items)}</div><div class="stat-label">精选推荐</div></div>' if curated_items else ''}
-  </div>
-</div>
-<div class="container">
-  <p class="last-update">🔄 更新于 {raw["fetched_at"]}</p>
-
-  {cur_html}
-</div>
-<div class="footer">
-  <p>每日网络安全简报 | 精选内容由 AI 分析师从 RSS Feed 原始数据中筛选撰写</p>
-  <p style="margin-top:4px;">数据源: {' · '.join(sorted(set(it['source'] for it in all_items)))}</p>
-</div>
-</body>
-</html>'''
+    page_html = tmpl.safe_substitute(
+        TITLE=date_cn,
+        OG_TITLE=html.escape(date_cn),
+        OG_DESC=og_desc,
+        SUBTITLE=f"{date_cn} 星期{weekday} · AI 分析师精选",
+        TOTAL_ITEMS=str(total),
+        SOURCE_COUNT=str(len(set(it['source'] for it in all_items))),
+        CURATED_STAT=curated_stat_html,
+        CURATED_HTML=cur_html or "",
+        LAST_UPDATE=raw["fetched_at"],
+        SOURCE_LIST=" · ".join(sorted(set(it['source'] for it in all_items))),
+    )
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         f.write(page_html)
     print(f"  [OK] 已生成: {OUTPUT_FILE} ({len(page_html):,} 字节)")

@@ -49,11 +49,8 @@ def clean_html(text):
 def fetch_rss(url, name, is_cn=False):
     items = []
     try:
-        if is_cn:
-            feed = feedparser.parse(url)
-        else:
-            resp = session.get(url, timeout=15)
-            feed = feedparser.parse(resp.content)
+        resp = session.get(url, timeout=15)
+        feed = feedparser.parse(resp.content)
         if feed.bozo and not feed.entries:
             return items
         now = datetime.now(timezone.utc)
