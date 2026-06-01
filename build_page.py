@@ -106,7 +106,7 @@ def build_html():
     weekday = ["一", "二", "三", "四", "五", "六", "日"][now.weekday()]
 
     all_items = raw.get("items", [])
-    raw_published = {it["url"]: it.get("published", "") for it in all_items}
+    raw_published = {it["url"]: (it.get("published", "") or "")[:10] for it in all_items}
     curated_items_raw = analysis.get("picks", []) if analysis else []
     curated_items = []
     for it in curated_items_raw:
@@ -114,7 +114,7 @@ def build_html():
             "title": it["title"],
             "url": it["url"],
             "source": it["source"],
-            "published": raw_published.get(it["url"], ""),
+            "published": (raw_published.get(it["url"], "") or "")[:10],
             "summary": it["analysis"],
             "original_title": it.get("original_title", ""),
             "importance": it.get("importance", ""),
