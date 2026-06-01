@@ -102,7 +102,7 @@ python[3] -c "import json; d=json.load(open('SKILL_DIR/raw_data.json')); [print(
 
 - JSON 格式合法
 - 每条 `url` 域名与来源匹配，且在 `raw_data.json` 中有对应条目
-- 每条 analysis 200~400 汉字
+- 每条 analysis 200~400 字符（需为自然通顺的中文分析，不可用标点符号硬凑长度）
 - importance 只出现 ★★★★★ 和 ★★★★☆
 - category 在指定集合中
 

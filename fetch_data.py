@@ -42,17 +42,27 @@ def clean_html(text):
 
 def fetch_rss(url, name, is_cn=False):
     items = []
-    try:
-        if is_cn:
-            feed = feedparser.parse(url)
-        else:
-            resp = session.get(url, timeout=15)
-            feed = feedparser.parse(resp.content)
-        if feed.bozo and not feed.entries:
+    feed = None
+    for attempt in range(2):
+        try:
+            if is_cn:
+                feed = feedparser.parse(url)
+            else:
+                resp = session.get(url, timeout=15)
+                feed = feedparser.parse(resp.content)
+            break
+        except Exception as e:
+            if attempt == 0:
+                print(f"  [R] {name}: 重试...")
+                continue
+            print(f"  [X] {name}: {e}")
             return items
-        now = datetime.now(timezone.utc)
-        cutoff = now - timedelta(hours=HOURS_BACK)
-        for entry in feed.entries[:MAX_PER_SOURCE]:
+    if feed is None or (feed.bozo and not feed.entries):
+        return items
+    now = datetime.now(timezone.utc)
+    cutoff = now - timedelta(hours=HOURS_BACK)
+    for entry in feed.entries[:MAX_PER_SOURCE]:
+        try:
             pub = None
             if hasattr(entry, "updated_parsed") and entry.updated_parsed:
                 pub = datetime(*entry.updated_parsed[:6], tzinfo=timezone.utc)
@@ -75,8 +85,8 @@ def fetch_rss(url, name, is_cn=False):
                 "published": pub.strftime("%Y-%m-%d %H:%M UTC") if pub else "",
                 "is_cn": is_cn,
             })
-    except Exception as e:
-        print(f"  [X] {name}: {e}")
+        except Exception:
+            continue
     return items
 
 def fetch_secrss():

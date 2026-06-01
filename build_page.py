@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """根据原始数据和分析结果生成 HTML 简报页面"""
 
-import json, os, sys
+import json, os, sys, html
 from datetime import datetime
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -142,29 +142,40 @@ def build_html():
             orig_cat = it.get("original_category", "")
             badge_label = orig_cat or section_cat
             cat_badge = f'<span class="cat-badge" style="background:{cat_cfg["color"]}18;color:{cat_cfg["color"]}">{badge_label}</span>'
-            return f'''<article class="intel-item curated">
+            e_url = html.escape(it["url"])
+        e_title = html.escape(title)
+        e_summary = html.escape(summary)
+        e_orig = html.escape(orig)
+        e_source = html.escape(it["source"])
+        e_pub = html.escape(it.get("published") or date_cn)
+        return f'''<article class="intel-item curated">
   <div class="curated-top">
     <span class="curated-badge">★ 分析师精选</span>
     {cat_badge}
     {"<span class='importance'>" + imp + "</span>" if imp else ""}
   </div>
-  <h3><a href="{it["url"]}" target="_blank" rel="noopener">{title}</a>{score_badge}</h3>
-  {f'<p class="original-title">原文: {orig}</p>' if orig and orig != title else ''}
-  <div class="summary">{summary}</div>
+  <h3><a href="{e_url}" target="_blank" rel="noopener">{e_title}</a>{score_badge}</h3>
+  {f'<p class="original-title">原文: {e_orig}</p>' if e_orig and e_orig != e_title else ''}
+  <div class="summary">{e_summary}</div>
   <div class="meta">
-    <span class="source-badge">{icon} {it["source"]}</span>
-    <span class="date">发布于 {it.get("published") or date_cn}</span>
-    <a class="origin-link" href="{it["url"]}" target="_blank">查看原文 →</a>
+    <span class="source-badge">{icon} {e_source}</span>
+    <span class="date">发布于 {e_pub}</span>
+    <a class="origin-link" href="{e_url}" target="_blank">查看原文 →</a>
   </div>
 </article>'''
 
+        e_url = html.escape(it["url"])
+        e_title = html.escape(title)
+        e_summary = html.escape(summary[:200])
+        e_source = html.escape(it["source"])
+        e_pub = html.escape(it.get("published") or date_cn)
         return f'''<article class="intel-item">
-  <h3><a href="{it["url"]}" target="_blank" rel="noopener">{title}</a>{score_badge}</h3>
-  <p class="summary">{summary[:200]}{"..." if len(summary) > 200 else ""}</p>
+  <h3><a href="{e_url}" target="_blank" rel="noopener">{e_title}</a>{score_badge}</h3>
+  <p class="summary">{e_summary}{"..." if len(summary) > 200 else ""}</p>
   <div class="meta">
-    <span class="source-badge">{icon} {it["source"]}</span>
-    <span class="date">{it.get("published") or date_cn}</span>
-    <a class="origin-link" href="{it["url"]}" target="_blank">查看原文 →</a>
+    <span class="source-badge">{icon} {e_source}</span>
+    <span class="date">{e_pub}</span>
+    <a class="origin-link" href="{e_url}" target="_blank">查看原文 →</a>
   </div>
 </article>'''
 
@@ -194,7 +205,7 @@ def build_html():
         cur_html = f'''<p class="curated-intro">以下为 AI 分析师从 {total} 条原始情报中筛选的重要信息，按分类展示</p>
 {"".join(sections)}'''
 
-    html = f'''<!DOCTYPE html>
+    page_html = f'''<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -299,8 +310,8 @@ body {{
 </body>
 </html>'''
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-        f.write(html)
-    print(f"  [OK] 已生成: {OUTPUT_FILE} ({len(html):,} 字节)")
+        f.write(page_html)
+    print(f"  [OK] 已生成: {OUTPUT_FILE} ({len(page_html):,} 字节)")
 
 if __name__ == "__main__":
     build_html()
