@@ -19,20 +19,6 @@
 | `analysis.json` | 分析师精选（运行时生成，已 gitignore） |
 | `index.html` | 生成的简报页面 |
 
-## 数据来源
-
-- The Hacker News
-- BleepingComputer
-- Krebs on Security
-- Unit 42
-- CISA 安全公告
-- Dark Reading
-- 嘶吼 RoarTalk
-- 先知社区
-- 安全内参
-- NVD 漏洞库
-- 中国网信网
-
 ## 使用
 
 ```bash
