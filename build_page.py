@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
 """根据原始数据和分析结果生成 HTML 简报页面"""
 
-import json, os, sys, html
+import json, os, sys, re, html, shutil
 from datetime import datetime
+from string import Template
+
+def hex_to_rgba(hex_color, alpha=0.1):
+    h = hex_color.lstrip("#")
+    r, g, b = int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
+    return f"rgba({r},{g},{b},{alpha})"
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 RAW_FILE = os.path.join(BASE_DIR, "raw_data.json")
@@ -106,7 +112,8 @@ def build_html():
     weekday = ["一", "二", "三", "四", "五", "六", "日"][now.weekday()]
 
     all_items = raw.get("items", [])
-    raw_published = {it["url"]: it.get("published", "") for it in all_items}
+    raw_published = {it["url"]: (it.get("published", "") or "")[:10] for it in all_items}
+    raw_scores = {it["url"]: it.get("score", 0) for it in all_items}
     curated_items_raw = analysis.get("picks", []) if analysis else []
     curated_items = []
     for it in curated_items_raw:
@@ -114,7 +121,8 @@ def build_html():
             "title": it["title"],
             "url": it["url"],
             "source": it["source"],
-            "published": raw_published.get(it["url"], ""),
+            "published": (raw_published.get(it["url"], "") or "")[:10],
+            "score": raw_scores.get(it["url"], 0),
             "summary": it["analysis"],
             "original_title": it.get("original_title", ""),
             "importance": it.get("importance", ""),
@@ -131,51 +139,46 @@ def build_html():
             color = "#dc2626" if it["score"] >= 9 else "#ea580c"
             score_badge = f'<span class="score" style="background:{color}">CVSS {it["score"]}</span>'
 
-        title = it.get("title_cn") or it["title"]
-        summary = it.get("summary_cn") or it.get("summary", "")
+        title = html.escape(it.get("title_cn") or it["title"])
+        summary = html.escape(it.get("summary_cn") or it.get("summary", ""))
 
         if is_curated:
             imp = it.get("importance", "")
-            orig = it.get("original_title", "")
+            orig = html.escape(it.get("original_title", ""))
             section_cat = it.get("category", "")
             cat_cfg = CATEGORY_CONFIG.get(section_cat, {"color": "#666"})
             orig_cat = it.get("original_category", "")
-            badge_label = orig_cat or section_cat
-            cat_badge = f'<span class="cat-badge" style="background:{cat_cfg["color"]}18;color:{cat_cfg["color"]}">{badge_label}</span>'
-            e_url = html.escape(it["url"])
-        e_title = html.escape(title)
-        e_summary = html.escape(summary)
-        e_orig = html.escape(orig)
-        e_source = html.escape(it["source"])
-        e_pub = html.escape(it.get("published") or date_cn)
-        return f'''<article class="intel-item curated">
+            badge_label = html.escape(orig_cat or section_cat)
+            safe_url = html.escape(it["url"])
+            safe_source = html.escape(it["source"])
+            safe_pub = html.escape(it.get("published") or date_cn)
+            cat_badge = f'<span class="cat-badge" style="background:{hex_to_rgba(cat_cfg["color"])};color:{cat_cfg["color"]}">{badge_label}</span>'
+            return f'''<article class="intel-item curated">
   <div class="curated-top">
     <span class="curated-badge">★ 分析师精选</span>
     {cat_badge}
     {"<span class='importance'>" + imp + "</span>" if imp else ""}
   </div>
-  <h3><a href="{e_url}" target="_blank" rel="noopener">{e_title}</a>{score_badge}</h3>
-  {f'<p class="original-title">原文: {e_orig}</p>' if e_orig and e_orig != e_title else ''}
-  <div class="summary">{e_summary}</div>
+  <h3><a href="{safe_url}" target="_blank" rel="noopener">{title}</a>{score_badge}</h3>
+  {f'<p class="original-title">原文: {orig}</p>' if orig and orig != title else ''}
+  <div class="summary">{summary}</div>
   <div class="meta">
-    <span class="source-badge">{icon} {e_source}</span>
-    <span class="date">发布于 {e_pub}</span>
-    <a class="origin-link" href="{e_url}" target="_blank">查看原文 →</a>
+    <span class="source-badge">{icon} {safe_source}</span>
+    <span class="date">发布于 {safe_pub}</span>
+    <a class="origin-link" href="{safe_url}" target="_blank" rel="noopener">查看原文 →</a>
   </div>
 </article>'''
 
-        e_url = html.escape(it["url"])
-        e_title = html.escape(title)
-        e_summary = html.escape(summary[:200])
-        e_source = html.escape(it["source"])
-        e_pub = html.escape(it.get("published") or date_cn)
+        safe_url = html.escape(it["url"])
+        safe_source = html.escape(it["source"])
+        safe_pub = html.escape(it.get("published") or date_cn)
         return f'''<article class="intel-item">
-  <h3><a href="{e_url}" target="_blank" rel="noopener">{e_title}</a>{score_badge}</h3>
-  <p class="summary">{e_summary}{"..." if len(summary) > 200 else ""}</p>
+  <h3><a href="{safe_url}" target="_blank" rel="noopener">{title}</a>{score_badge}</h3>
+  <p class="summary">{summary[:200]}{"..." if len(summary) > 200 else ""}</p>
   <div class="meta">
-    <span class="source-badge">{icon} {e_source}</span>
-    <span class="date">{e_pub}</span>
-    <a class="origin-link" href="{e_url}" target="_blank">查看原文 →</a>
+    <span class="source-badge">{icon} {safe_source}</span>
+    <span class="date">{safe_pub}</span>
+    <a class="origin-link" href="{safe_url}" target="_blank" rel="noopener">查看原文 →</a>
   </div>
 </article>'''
 
@@ -205,112 +208,78 @@ def build_html():
         cur_html = f'''<p class="curated-intro">以下为 AI 分析师从 {total} 条原始情报中筛选的重要信息，按分类展示</p>
 {"".join(sections)}'''
 
-    page_html = f'''<!DOCTYPE html>
+    og_desc = f"AI 分析师从 {total} 条情报中精选 {len(curated_items)} 条安全要闻，涵盖政策法规、安全事件、漏洞风险等"
+    curated_stat_html = (f'<div class="stat"><div class="stat-value">{len(curated_items)}</div><div class="stat-label">精选推荐</div></div>'
+                         if curated_items else '')
+
+    tmpl_path = os.path.join(BASE_DIR, "template.html")
+    with open(tmpl_path, encoding="utf-8") as f:
+        tmpl = Template(f.read())
+
+    page_html = tmpl.safe_substitute(
+        TITLE=date_cn,
+        OG_TITLE=html.escape(date_cn),
+        OG_DESC=og_desc,
+        SUBTITLE=f"{date_cn} 星期{weekday} · AI 分析师精选",
+        TOTAL_ITEMS=str(total),
+        SOURCE_COUNT=str(len(set(it['source'] for it in all_items))),
+        CURATED_STAT=curated_stat_html,
+        CURATED_HTML=cur_html or "",
+        LAST_UPDATE=raw["fetched_at"],
+        SOURCE_LIST=" · ".join(sorted(set(it['source'] for it in all_items))),
+    )
+    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+        f.write(page_html)
+
+    date_label = datetime.now().strftime("%Y-%m-%d")
+
+    if analysis and os.path.exists(ANALYSIS_FILE):
+        analysis_dir = os.path.join(BASE_DIR, "analysis")
+        os.makedirs(analysis_dir, exist_ok=True)
+        analysis_path = os.path.join(analysis_dir, f"{date_label}.json")
+        if not os.path.exists(analysis_path):
+            shutil.copy2(ANALYSIS_FILE, analysis_path)
+
+    html_dir = os.path.join(BASE_DIR, "archive")
+    os.makedirs(html_dir, exist_ok=True)
+    html_path = os.path.join(html_dir, f"{date_label}.html")
+    with open(html_path, "w", encoding="utf-8") as f:
+        f.write(page_html)
+
+    dates = sorted(set(
+        f.removesuffix(".html") for f in os.listdir(html_dir)
+        if f.endswith(".html") and f != "index.html"
+    ), reverse=True)
+    links = "\n".join(
+        f'    <li><a href="{d}.html">{d}</a></li>' for d in dates
+    )
+    archive_html = f"""<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>每日网络安全简报 - {date_cn}</title>
+<title>每日网络安全简报 - 历史归档</title>
 <style>
-*, *::before, *::after {{ margin:0; padding:0; box-sizing:border-box; }}
-body {{
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", "PingFang SC", sans-serif;
-  background: #f0f2f5; color: #1a1a2e; line-height: 1.6;
-}}
-.header {{
-  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-  color: #fff; padding: 40px 20px; text-align: center; position: relative; overflow: hidden;
-}}
-.header::before {{
-  content: ''; position: absolute; top:0;left:0;right:0;bottom:0;
-  background: radial-gradient(circle at 20% 50%, rgba(0,180,216,0.15) 0%, transparent 50%),
-              radial-gradient(circle at 80% 50%, rgba(114,9,183,0.1) 0%, transparent 50%);
-}}
-.header h1 {{ font-size:2.6em; font-weight:700; position:relative; letter-spacing:2px; }}
-.header .subtitle {{ font-size:0.95em; color:rgba(255,255,255,0.7); margin-top:8px; position:relative; }}
-.stats-bar {{ display:flex; justify-content:center; gap:40px; margin-top:20px; position:relative; }}
-.stat {{ text-align:center; }}
-.stat-value {{ font-size:1.8em; font-weight:700; color:#48bfe3; }}
-.stat-label {{ font-size:0.8em; color:rgba(255,255,255,0.6); }}
-.container {{ max-width:900px; margin:0 auto; padding:24px 16px; }}
-.last-update {{ text-align:right; font-size:0.85em; color:#888; margin-bottom:20px; }}
-
-.curated-intro {{ font-size:0.85em; color:#666; margin-bottom:20px; padding-left:4px; }}
-.cat-section {{ margin-bottom:28px; padding-top:12px; }}
-.cat-section-title {{
-  font-size:1.15em; font-weight:600; color:#1a1a2e;
-  margin-bottom:14px; display:flex; align-items:center; gap:8px;
-}}
-.cat-section-title .count {{ font-size:0.8em; color:#888; font-weight:400; }}
-
-.intel-item.curated {{
-  border-left: 4px solid #f59e0b;
-  background: linear-gradient(135deg, #fffbeb 0%, #fff 100%);
-}}
-.curated-badge {{
-  display: inline-block; background:#f59e0b; color:#fff;
-  font-size:0.72em; font-weight:600; padding:2px 10px; border-radius:4px;
-  margin-bottom:8px;
-}}
-.intel-item.curated .summary {{ font-size:0.92em; color:#333; line-height:1.7; }}
-.original-title {{ font-size:0.78em; color:#999; margin-bottom:6px; }}
-.curated-top {{ display:flex; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap; }}
-.importance {{ font-size:0.8em; color:#f59e0b; letter-spacing:1px; }}
-.cat-badge {{ display:inline-block; font-size:0.72em; font-weight:600; padding:2px 10px; border-radius:4px; margin-bottom:6px; }}
-.intel-item {{
-  background:#fff; border-radius:8px; padding:18px 20px; margin-bottom:14px;
-  box-shadow:0 1px 3px rgba(0,0,0,0.06); transition:all 0.2s;
-}}
-.intel-item:hover {{ box-shadow:0 4px 12px rgba(0,0,0,0.1); transform:translateY(-1px); }}
-.intel-item h3 {{
-  font-size:1em; font-weight:600; margin-bottom:6px;
-  display:flex; align-items:flex-start; gap:8px;
-}}
-.intel-item h3 a {{ color:#000000; text-decoration:none; flex:1; }}
-.intel-item h3 a:hover {{ color:#4361ee; text-decoration:underline; }}
-.score {{
-  font-size:0.7em; color:#fff; padding:2px 8px; border-radius:4px;
-  white-space:nowrap; flex-shrink:0; margin-top:1px;
-}}
-.summary {{ font-size:0.88em; color:#555; line-height:1.55; margin-bottom:8px; }}
-.meta {{ display:flex; align-items:center; gap:12px; font-size:0.78em; flex-wrap:wrap; }}
-.source-badge {{ background:#eef2ff; color:#4361ee; padding:2px 10px; border-radius:12px; font-weight:500; }}
-.date {{ color:#999; }}
-.origin-link {{ color:#4361ee; text-decoration:none; margin-left:auto; }}
-.origin-link:hover {{ text-decoration:underline; }}
-.footer {{ text-align:center; padding:30px 20px; color:#999; font-size:0.85em; }}
-@media (max-width:600px) {{
-  .header h1 {{ font-size:1.9em; }}
-  .stats-bar {{ gap:20px; }}
-  .stat-value {{ font-size:1.4em; }}
-  .intel-item {{ padding:14px 16px; }}
-  .intel-item h3 {{ font-size:0.95em; }}
-}}
+body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif; background: #f0f2f5; color: #1a1a2e; line-height: 1.6; max-width: 600px; margin: 0 auto; padding: 40px 20px; }}
+h1 {{ font-size: 1.5em; margin-bottom: 8px; }}
+p {{ color: #666; margin-bottom: 24px; }}
+ul {{ list-style: none; padding: 0; }}
+li {{ padding: 8px 0; }}
+a {{ color: #4361ee; text-decoration: none; }}
+a:hover {{ text-decoration: underline; }}
 </style>
 </head>
 <body>
-<div class="header">
-  <h1>🛡️ 每日网络安全简报</h1>
-  <p class="subtitle">{date_cn} 星期{weekday} · AI 分析师精选</p>
-  <div class="stats-bar">
-    <div class="stat"><div class="stat-value">{total}</div><div class="stat-label">情报条目</div></div>
-    <div class="stat"><div class="stat-value">{len(set(it['source'] for it in all_items))}</div><div class="stat-label">数据来源</div></div>
-    {f'<div class="stat"><div class="stat-value">{len(curated_items)}</div><div class="stat-label">精选推荐</div></div>' if curated_items else ''}
-  </div>
-</div>
-<div class="container">
-  <p class="last-update">🔄 更新于 {raw["fetched_at"]}</p>
-
-  {cur_html}
-</div>
-<div class="footer">
-  <p>每日网络安全简报 | 精选内容由 AI 分析师从 RSS Feed 原始数据中筛选撰写</p>
-  <p style="margin-top:4px;">数据源: {' · '.join(sorted(set(it['source'] for it in all_items)))}</p>
-</div>
+<h1>📅 历史归档</h1>
+<p>共 {len(dates)} 期简报</p>
+<ul>
+{links}
+</ul>
 </body>
-</html>'''
-    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-        f.write(page_html)
+</html>"""
+    with open(os.path.join(html_dir, "index.html"), "w", encoding="utf-8") as f:
+        f.write(archive_html)
+
     print(f"  [OK] 已生成: {OUTPUT_FILE} ({len(page_html):,} 字节)")
 
 if __name__ == "__main__":

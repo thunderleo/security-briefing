@@ -2,6 +2,11 @@
 raw_data.json
 analysis.json
 
+# 历史归档（自动生成）
+raw_data/
+analysis/
+archive/
+
 # Python
 __pycache__/
 *.pyc
